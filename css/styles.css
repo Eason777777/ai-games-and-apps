@@ -224,8 +224,10 @@ body {
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* 移除固定位置，由 JavaScript 動態設置 */
-    transition: all 0.3s ease-in-out; /* 添加過渡效果 */
-    will-change: transform; /* 優化動畫性能 */
+    transition: all 0.3s ease-in-out;
+    /* 添加過渡效果 */
+    will-change: transform;
+    /* 優化動畫性能 */
 }
 
 .icon-item:hover {
@@ -235,15 +237,20 @@ body {
 }
 
 @keyframes float {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translate(-50%, -50%) translateY(0px) rotate(0deg);
     }
+
     25% {
         transform: translate(-50%, -50%) translateY(-15px) rotate(2deg);
     }
+
     50% {
         transform: translate(-50%, -50%) translateY(8px) rotate(-1deg);
     }
+
     75% {
         transform: translate(-50%, -50%) translateY(-8px) rotate(1deg);
     }
@@ -474,20 +481,21 @@ section {
 
 .pdf-highlight i {
     font-size: 2rem;
-    color: #e74c3c;  /* PDF 紅色 */
+    color: #e74c3c;
+    /* PDF 紅色 */
     margin-top: 0.5rem;
 }
 
-.btn-pdf {
+.btn-secondary.btn-pdf {
     margin-top: 1rem;
-    background: linear-gradient(45deg, #e74c3c, #ff5e57);
+    background: linear-gradient(45deg, #3498db, #2980b9);
     color: white;
     border: none;
 }
 
-.btn-pdf:hover {
-    background: linear-gradient(45deg, #ff5e57, #e74c3c);
-    box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+.btn-secondary.btn-pdf:hover {
+    background: linear-gradient(45deg, #2980b9, #3498db);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
     transform: translateY(-2px);
 }
 

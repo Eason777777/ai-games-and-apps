@@ -21,7 +21,7 @@ function positionFloatingIcons() {
     }
 
     console.log(`開始重新定位 ${iconItems.length} 個浮動符號`);
-    
+
     const iconSize = 80; // 符號大小
     const minDistancePercent = 22; // 優化：稍微降低最小距離
     const positions = [];
@@ -449,7 +449,7 @@ const pdfViewerContainer = document.getElementById('pdfViewerContainer');
 if (togglePdfReader && pdfViewerContainer) {
     togglePdfReader.addEventListener('click', () => {
         const isHidden = pdfViewerContainer.style.display === 'none';
-        
+
         if (isHidden) {
             pdfViewerContainer.style.display = 'block';
             setTimeout(() => {
