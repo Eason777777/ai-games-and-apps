@@ -9,27 +9,33 @@ const navLinks = document.querySelectorAll('.nav-link');
 // 動態設置浮動符號位置，避免重疊
 function positionFloatingIcons() {
     const iconItems = document.querySelectorAll('.icon-item');
-    if (iconItems.length === 0) return;
+    if (iconItems.length === 0) {
+        console.log('未找到浮動符號元素');
+        return;
+    }
 
     const container = document.querySelector('.floating-icons');
-    if (!container) return;
+    if (!container) {
+        console.log('未找到浮動符號容器');
+        return;
+    }
 
-    const containerRect = container.getBoundingClientRect();
+    console.log(`開始重新定位 ${iconItems.length} 個浮動符號`);
+    
     const iconSize = 80; // 符號大小
-    const minDistancePercent = 25; // 最小距離百分比
-
+    const minDistancePercent = 22; // 優化：稍微降低最小距離
     const positions = [];
 
     // 為每個符號生成不重疊的位置（使用百分比）
     iconItems.forEach((icon, index) => {
         let position;
         let attempts = 0;
-        const maxAttempts = 100;
+        const maxAttempts = 150; // 增加嘗試次數
 
         do {
             position = {
-                x: Math.random() * 80 + 5, // 5% 到 85% 之間
-                y: Math.random() * 80 + 5  // 5% 到 85% 之間
+                x: Math.random() * 75 + 10, // 10% 到 85% 之間，避免邊緣
+                y: Math.random() * 75 + 10  // 10% 到 85% 之間，避免邊緣
             };
             attempts++;
         } while (attempts < maxAttempts && positions.some(pos => {
@@ -43,19 +49,33 @@ function positionFloatingIcons() {
         icon.style.position = 'absolute';
         icon.style.left = `${position.x}%`;
         icon.style.top = `${position.y}%`;
+        icon.style.transform = 'translate(-50%, -50%)'; // 讓符號以中心為定位點
 
-        // 設置隨機動畫延遲
-        icon.style.animationDelay = `${index * 1.2 + Math.random() * 1.5}s`;
+        // 設置隨機動畫延遲，創造更自然的感覺
+        const animationDelay = index * 0.8 + Math.random() * 2;
+        icon.style.animationDelay = `${animationDelay}s`;
 
         // 添加隨機動畫持續時間變化，讓每個符號的浮動速度稍有不同
-        icon.style.animationDuration = `${5 + Math.random() * 2}s`;
+        const animationDuration = 5 + Math.random() * 3;
+        icon.style.animationDuration = `${animationDuration}s`;
+
+        // 添加透明度動畫，讓符號逐漸顯現
+        icon.style.opacity = '0';
+        setTimeout(() => {
+            icon.style.transition = 'opacity 0.8s ease-in-out';
+            icon.style.opacity = '1';
+        }, animationDelay * 1000);
+
+        console.log(`符號 ${index + 1} 定位於: ${position.x.toFixed(1)}%, ${position.y.toFixed(1)}% (嘗試 ${attempts} 次)`);
     });
+
+    console.log('浮動符號定位完成');
 }
 
 // 頁面載入完成後執行位置設置
 document.addEventListener('DOMContentLoaded', () => {
     // 等待 CSS 載入完成
-    setTimeout(positionFloatingIcons, 100);
+    setTimeout(positionFloatingIcons, 200);
 
     // 視窗大小變化時重新計算位置
     let resizeTimeout;
@@ -421,6 +441,30 @@ document.addEventListener('click', (e) => {
         showLoading(e.target.closest('.btn-play'));
     }
 });
+
+// PDF閱讀器功能
+const togglePdfReader = document.getElementById('togglePdfReader');
+const pdfViewerContainer = document.getElementById('pdfViewerContainer');
+
+if (togglePdfReader && pdfViewerContainer) {
+    togglePdfReader.addEventListener('click', () => {
+        const isHidden = pdfViewerContainer.style.display === 'none';
+        
+        if (isHidden) {
+            pdfViewerContainer.style.display = 'block';
+            setTimeout(() => {
+                pdfViewerContainer.classList.add('active');
+                togglePdfReader.innerHTML = '<i class="fas fa-times"></i> 關閉PDF閱讀器';
+            }, 10);
+        } else {
+            pdfViewerContainer.classList.remove('active');
+            setTimeout(() => {
+                pdfViewerContainer.style.display = 'none';
+                togglePdfReader.innerHTML = '<i class="fas fa-book-reader"></i> 在網頁中閱讀PDF';
+            }, 300);
+        }
+    });
+}
 
 console.log('🎮 AI 智能平台主頁已載入完成！');
 console.log('🤖 使用 GitHub Copilot 開發');

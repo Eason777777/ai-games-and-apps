@@ -224,21 +224,28 @@ body {
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* 移除固定位置，由 JavaScript 動態設置 */
+    transition: all 0.3s ease-in-out; /* 添加過渡效果 */
+    will-change: transform; /* 優化動畫性能 */
+}
+
+.icon-item:hover {
+    transform: translate(-50%, -50%) scale(1.1) !important;
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
 }
 
 @keyframes float {
-
-    0%,
-    100% {
-        transform: translateY(0px) rotate(0deg);
+    0%, 100% {
+        transform: translate(-50%, -50%) translateY(0px) rotate(0deg);
     }
-
-    33% {
-        transform: translateY(-20px) rotate(5deg);
+    25% {
+        transform: translate(-50%, -50%) translateY(-15px) rotate(2deg);
     }
-
-    66% {
-        transform: translateY(10px) rotate(-5deg);
+    50% {
+        transform: translate(-50%, -50%) translateY(8px) rotate(-1deg);
+    }
+    75% {
+        transform: translate(-50%, -50%) translateY(-8px) rotate(1deg);
     }
 }
 
@@ -449,6 +456,75 @@ section {
 
 .highlight-item p {
     color: #666;
+}
+
+.pdf-reader-section {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.pdf-highlight {
+    padding: 1.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.pdf-highlight i {
+    font-size: 2rem;
+    color: #e74c3c;  /* PDF 紅色 */
+    margin-top: 0.5rem;
+}
+
+.btn-pdf {
+    margin-top: 1rem;
+    background: linear-gradient(45deg, #e74c3c, #ff5e57);
+    color: white;
+    border: none;
+}
+
+.btn-pdf:hover {
+    background: linear-gradient(45deg, #ff5e57, #e74c3c);
+    box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+    transform: translateY(-2px);
+}
+
+.btn-pdf {
+    margin-right: 10px;
+    margin-top: 1rem;
+}
+
+.btn-primary.btn-pdf {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+}
+
+.btn-primary.btn-pdf:hover {
+    background: linear-gradient(45deg, #764ba2, #667eea);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.pdf-viewer-container {
+    margin-top: 1.5rem;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    height: 0;
+    opacity: 0;
+}
+
+.pdf-viewer-container.active {
+    height: 600px;
+    opacity: 1;
+}
+
+.pdf-viewer-frame {
+    width: 100%;
+    height: 600px;
+    border: none;
+    display: block;
 }
 
 .about-stats {
