@@ -11,10 +11,10 @@ class UI {
     // 初始化DOM元素
     initializeElements() {
         this.elements = {
-            // 遊戲模式按鈕
-            humanVsHuman: document.getElementById('human-vs-human'),
-            humanVsAI: document.getElementById('human-vs-ai'),
-            aiVsAI: document.getElementById('ai-vs-ai'),
+            // 模式卡片
+            cardHumanVsHuman: document.getElementById('card-human-vs-human'),
+            cardHumanVsAI: document.getElementById('card-human-vs-ai'),
+            cardAIVsAI: document.getElementById('card-ai-vs-ai'),
             viewRules: document.getElementById('view-rules'),
 
             // 符號選擇
@@ -41,7 +41,6 @@ class UI {
             // 控制按鈕
             newGame: document.getElementById('new-game'),
             undo: document.getElementById('undo'),
-            muteButton: document.getElementById('mute-button'),
 
             // 模態框
             modal: document.getElementById('modal'),
@@ -54,10 +53,10 @@ class UI {
 
     // 綁定事件
     bindEvents() {
-        // 遊戲模式選擇
-        this.elements.humanVsHuman?.addEventListener('click', () => this.selectGameMode('human-vs-human'));
-        this.elements.humanVsAI?.addEventListener('click', () => this.selectGameMode('human-vs-ai'));
-        this.elements.aiVsAI?.addEventListener('click', () => this.selectGameMode('ai-vs-ai'));
+        // 模式卡片選擇
+        this.elements.cardHumanVsHuman?.addEventListener('click', () => this.selectGameMode('human-vs-human'));
+        this.elements.cardHumanVsAI?.addEventListener('click', () => this.selectGameMode('human-vs-ai'));
+        this.elements.cardAIVsAI?.addEventListener('click', () => this.selectGameMode('ai-vs-ai'));
         this.elements.viewRules?.addEventListener('click', () => this.showRules());
 
         // 符號選擇
@@ -75,7 +74,6 @@ class UI {
         // 控制按鈕
         this.elements.newGame?.addEventListener('click', () => this.onNewGame());
         this.elements.undo?.addEventListener('click', () => this.onUndo());
-        this.elements.muteButton?.addEventListener('click', () => this.toggleMute());
 
         // 模態框
         this.elements.closeButton?.addEventListener('click', () => this.closeModal());
@@ -114,121 +112,78 @@ class UI {
     selectGameMode(mode) {
         this.currentGameMode = mode;
 
-        // 更新按鈕樣式
-        document.querySelectorAll('.button-group button').forEach(btn => {
-            btn.classList.remove('active');
+        // 更新卡片樣式
+        document.querySelectorAll('.mode-card').forEach(card => {
+            card.classList.remove('active');
         });
 
-        const selectedButton = document.getElementById(mode);
-        selectedButton?.classList.add('active');
+        const selectedCard = document.getElementById(`card-${mode}`);
+        selectedCard?.classList.add('active');
 
-        // 顯示相應的設置界面
-        this.showGameModeSettings(mode);
-
-        // 播放點擊音效
-        window.audioManager?.playClick();
+        // 顯示模式設定模態框
+        this.showGameSettingModal(mode);
     }
 
-    // 顯示遊戲模式設置
-    showGameModeSettings(mode) {
-        // 隱藏所有設置面板
-        this.elements.playerSymbolSelection.style.display = 'none';
-        this.elements.aiDifficulty.style.display = 'none';
-        this.elements.singleAIDifficulty.style.display = 'none';
-        this.elements.aiVsAIDifficulty.style.display = 'none'; switch (mode) {
-            case 'human-vs-human':
-                // 直接開始遊戲
-                setTimeout(() => window.game?.startGame('human'), 300);
-                break;
-            case 'human-vs-ai':
-                // 顯示符號選擇和 AI 難度
-                this.elements.playerSymbolSelection.style.display = 'block';
-                this.elements.aiDifficulty.style.display = 'block';
-                this.elements.singleAIDifficulty.style.display = 'block';
-                break;
-            case 'ai-vs-ai':
-                // 顯示 AI vs AI 難度選擇
-                this.elements.aiDifficulty.style.display = 'block';
-                this.elements.aiVsAIDifficulty.style.display = 'block';
-                break;
+    // 顯示遊戲模式設定模態框
+    showGameSettingModal(mode) {
+        if (window.gameSettingModal) {
+            const defaults = { mode };
+            window.gameSettingModal.show(defaults, (settings) => {
+                // 模態框確認後的回調
+                if (settings.mode === 'human-vs-human') {
+                    window.game?.startGame('human');
+                } else if (settings.mode === 'human-vs-ai') {
+                    window.game?.setPlayerSymbol(settings.playerSymbol);
+                    window.game?.setAIDifficulty(settings.aiLevel);
+                    window.game?.startGame('ai');
+                } else if (settings.mode === 'ai-vs-ai') {
+                    window.game?.setAIDifficulty(settings.xAiLevel, 'X');
+                    window.game?.setAIDifficulty(settings.oAiLevel, 'O');
+                    window.game?.startGame('ai-vs-ai');
+                }
+            });
+        } else {
+            console.error('Game setting modal not initialized');
+            // 降級處理
+            if (mode === 'human-vs-human') {
+                window.game?.startGame('human');
+            }
         }
-    }
-
+    }    // 這些方法已經移至模態框中處理
+    // 保留空方法以維護向後兼容
+    
     // 選擇玩家符號
     selectPlayerSymbol(symbol) {
-        // 更新按鈕樣式
-        document.querySelectorAll('.symbol-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-
-        const selectedButton = document.getElementById(`select-${symbol.toLowerCase()}`);
-        selectedButton?.classList.add('active');
-
-        window.game?.setPlayerSymbol(symbol);
-        window.audioManager?.playClick();
+        // 此方法已移至模態框中處理
     }
 
     // 選擇 AI 難度
     selectDifficulty(difficulty, player = null) {
-        const difficultyValue = difficulty.replace(/^[xo]-/, '');
+        // 此方法已移至模態框中處理
+    }
 
-        if (player) {
-            // AI vs AI 模式
-            const buttons = document.querySelectorAll(`.${player.toLowerCase()}-ai-btn`);
-            buttons.forEach(btn => btn.classList.remove('active'));
-            document.getElementById(difficulty)?.classList.add('active');
-
-            window.game?.setAIDifficulty(difficultyValue, player);
-        } else {
-            // 單人 AI 模式
-            const buttons = document.querySelectorAll('#single-ai-difficulty .difficulty-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            document.getElementById(difficulty)?.classList.add('active');
-
-            window.game?.setAIDifficulty(difficultyValue);
-        }
-
-        window.audioManager?.playClick();
-    }    // 確認 AI 設置
+    // 確認 AI 設置
     confirmAISettings() {
-        const actualMode = this.currentGameMode === 'human-vs-ai' ? 'ai' : this.currentGameMode;
-        window.game?.startGame(actualMode);
-        window.audioManager?.playClick();
-    }    // 棋盤格子點擊
+        // 此方法已移至模態框中處理
+    }
+
+    // 棋盤格子點擊
     onCellClick(index) {
         if (this.isAnimating) return;
         window.game?.handleCellClick(index);
-    }    // 新遊戲
+    }
+
+    // 新遊戲
     onNewGame() {
         window.game?.restartGame();
-        window.audioManager?.playNewGame();
     }
 
     // 悔棋
     onUndo() {
         window.game?.undoMove();
-        window.audioManager?.playClick();
-    }    // 切換音效
-    toggleMute() {
-        const enabled = window.audioManager?.toggle();
-        this.updateSoundButton(enabled);
     }
 
-    // 更新音效按鈕顯示
-    updateSoundButton(enabled) {
-        const button = this.elements.muteButton;
-        if (button) {
-            const icon = button.querySelector('i');
-            const text = button.childNodes[1];
-            if (enabled) {
-                icon.className = 'fas fa-volume-up';
-                text.textContent = ' 音效：開';
-            } else {
-                icon.className = 'fas fa-volume-mute';
-                text.textContent = ' 音效：關';
-            }
-        }
-    }// 更新棋盤顯示
+    // 更新棋盤顯示
     updateBoard(board) {
         this.elements.cells.forEach((cell, index) => {
             const value = board.grid[index];
@@ -278,18 +233,16 @@ class UI {
         line.forEach(index => {
             this.elements.cells[index]?.classList.add('winning');
         });
-    }
-
-    // 顯示遊戲結束對話框
+    }    // 顯示遊戲結束對話框
     showGameEndDialog(title, message, callback = null) {
         this.showModal(title, message, callback);
 
-        // 添加慶祝動畫
-        if (title.includes('獲勝')) {
+        // 添加慶祝動畫，檢查多種勝利情況的文本
+        if (title.includes('獲勝') || title.includes('贏了') || title === '你贏了！') {
             this.elements.modal?.classList.add('celebrate');
             setTimeout(() => {
                 this.elements.modal?.classList.remove('celebrate');
-            }, 2000);
+            }, 2500);
         }
     }
 
@@ -319,22 +272,23 @@ class UI {
 
     // 顯示規則
     showRules() {
-        const rules = `
-井字棋遊戲規則：
+        const title = window.textManager?.getText('modal.gameRules.title', '井字棋遊戲規則');
+        const content = window.textManager?.getText('modal.gameRules.content', `
+井字棋是一個經典的策略遊戲，規則簡單易懂：
 
-1. 遊戲在3x3的棋盤上進行
-2. 兩名玩家輪流在空格中放置自己的符號（X或O）
-3. 第一個在水平、垂直或對角線上連成三個符號的玩家獲勝
-4. 如果棋盤填滿但沒有玩家獲勝，則為平局
+1. 遊戲在 3×3 的棋盤上進行
+2. 兩名玩家輪流在空格中放置自己的符號（X 或 O）
+3. 率先在橫、直、斜任意方向連成一線者獲勝
+4. 如果棋盤填滿而無人獲勝則為平局
 
-AI 難度說明：
-• 簡單：隨機選擇為主，偶爾使用基本策略
-• 普通：使用基本的攻守策略，優先中心和角落
-• 困難：使用 Minimax 演算法，偶爾出現失誤
-• 不可能：完美的 Minimax 演算法，永不出錯
-        `;
+**AI 難度說明：**
+- 簡單：隨機策略，適合初學者
+- 普通：基礎 Minimax 演算法
+- 困難：進階 Minimax 演算法
+- 不可能：完美 Minimax 演算法，永不出錯
+        `);
 
-        this.showModal('遊戲規則', rules);
+        this.showModal(title, content);
     }
 
     // 顯示載入動畫
@@ -402,7 +356,9 @@ AI 難度說明：
         setTimeout(() => {
             element?.classList.remove('error-shake');
         }, 500);
-    }    // 重置UI到初始狀態
+    }
+
+    // 重置UI到初始狀態
     reset() {
         this.elements.cells.forEach(cell => {
             cell.textContent = '';
@@ -426,8 +382,8 @@ AI 難度說明：
         this.elements.aiVsAIDifficulty.style.display = 'none';
 
         // 重置遊戲模式按鈕
-        document.querySelectorAll('.button-group button').forEach(btn => {
-            btn.classList.remove('active');
+        document.querySelectorAll('.mode-card').forEach(card => {
+            card.classList.remove('active');
         });
 
         // 重置棋盤和狀態

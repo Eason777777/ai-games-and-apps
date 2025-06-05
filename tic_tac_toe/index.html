@@ -4,27 +4,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>井字棋 - Minimax AI</title>
+    <title data-text="welcome.title">井字棋 - Minimax AI</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/ai_difficulty.css">
+    <link rel="stylesheet" href="css/welcome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
     <div class="container">
-        <div class="header">
-            <h1><i class="fas fa-th"></i> 井字棋 <span class="subtitle">Minimax AI</span></h1>
+        <!-- 歡迎區域 -->
+        <div class="welcome-section">
+            <div class="welcome-title"><i class="fas fa-th"></i> <span data-text="welcome.title">井字棋</span></div>
+            <div class="welcome-subtitle" data-text="welcome.subtitle">Minimax AI 智能系統</div>
+            <div class="welcome-description" data-text="welcome.description">
+                體驗經典的井字棋遊戲，挑戰不同難度的 Minimax AI 對手，或觀看 AI 自我對弈的策略展示
+            </div>
         </div>
 
-        <div class="mode-selection">
-            <h2><i class="fas fa-gamepad"></i> 遊戲模式</h2>
-            <div class="button-group">
-                <button id="human-vs-human"><i class="fas fa-user"></i> 人類 vs 人類</button>
-                <button id="human-vs-ai"><i class="fas fa-robot"></i> 人類 vs AI</button>
-                <button id="ai-vs-ai"><i class="fas fa-microchip"></i> AI vs AI</button>
-                <button id="view-rules"><i class="fas fa-book"></i> 遊戲規則</button>
+        <!-- 模式卡片區 -->
+        <div class="mode-cards-container">
+            <div class="mode-card" id="card-human-vs-human" data-mode="human-vs-human">
+                <div class="mode-icon"><i class="fas fa-users"></i></div>
+                <div class="mode-title" data-text="modes.humanVsHuman.title">人類對戰</div>
+                <div class="mode-description" data-text="modes.humanVsHuman.description">與朋友面對面對弈，享受經典樂趣</div>
             </div>
+            <div class="mode-card" id="card-human-vs-ai" data-mode="human-vs-ai">
+                <div class="mode-icon"><i class="fas fa-robot"></i></div>
+                <div class="mode-title">
+                    <span data-text="modes.humanVsAI.title">挑戰 AI</span>
+                    <span class="mode-recommend" data-text="modes.humanVsAI.recommend">推薦</span>
+                </div>
+                <div class="mode-description" data-text="modes.humanVsAI.description">測試您的策略技巧，與 Minimax AI 一較高下</div>
+            </div>
+            <div class="mode-card" id="card-ai-vs-ai" data-mode="ai-vs-ai">
+                <div class="mode-icon"><i class="fas fa-microchip"></i></div>
+                <div class="mode-title" data-text="modes.aiVsAI.title">AI 對戰</div>
+                <div class="mode-description" data-text="modes.aiVsAI.description">觀看兩個 AI 的精彩對局，學習最佳策略</div>
+            </div>
+        </div>
+
+        <div style="text-align:center;margin-bottom:18px;">
+            <button id="view-rules" class="quick-start-btn">
+                <i class="fas fa-book"></i> 
+                <span data-text="ui.buttons.viewRules">查看規則</span>
+            </button>
         </div>
 
         <div class="game-info">
@@ -45,55 +70,99 @@
                     <span id="o-score">0</span>
                 </div>
             </div>
-        </div>
-
-        <div id="player-symbol-selection" style="display: none;">
-            <h3><i class="fas fa-palette"></i> 選擇您的符號</h3>
+        </div>        <!-- 符號選擇區域 -->
+        <div class="symbol-selection" id="player-symbol-selection" style="display: none;">
+            <h3><i class="fas fa-palette"></i> <span data-text="ui.messages.selectSymbol">請選擇您的符號</span></h3>
             <div class="symbol-selection-buttons">
                 <button id="select-x" class="symbol-btn active">
-                    <div class="symbol-preview x">X</div> X (先手)
+                    <div class="symbol-preview x" data-text="game.symbols.x">X</div> 
+                    <span data-text="game.symbols.xFirst">X (先手)</span>
                 </button>
                 <button id="select-o" class="symbol-btn">
-                    <div class="symbol-preview o">O</div> O (後手)
+                    <div class="symbol-preview o" data-text="game.symbols.o">O</div> 
+                    <span data-text="game.symbols.oSecond">O (後手)</span>
                 </button>
             </div>
         </div>
 
+        <!-- AI 難度選擇區域 -->
         <div class="ai-difficulty" id="ai-difficulty" style="display: none;">
-            <h2><i class="fas fa-sliders-h"></i> AI 難度</h2>
-            <div id="single-ai-difficulty" class="button-group difficulty-buttons">
-                <button id="easy" class="difficulty-btn"><i class="fas fa-baby"></i> 簡單</button>
-                <button id="medium" class="difficulty-btn"><i class="fas fa-user-graduate"></i> 普通</button>
-                <button id="hard" class="difficulty-btn"><i class="fas fa-brain"></i> 困難</button>
-                <button id="impossible" class="difficulty-btn"><i class="fas fa-robot"></i> 不可能</button>
-                <button id="confirm-ai-settings" class="confirm-btn"><i class="fas fa-check-circle"></i> 確定</button>
+            <h2><i class="fas fa-sliders-h"></i> <span data-text="ui.messages.selectDifficulty">請選擇 AI 難度</span></h2>
+            <div id="single-ai-difficulty" class="difficulty-section">
+                <div class="difficulty-buttons">
+                    <button id="easy" class="difficulty-btn">
+                        <i class="fas fa-baby"></i> 
+                        <span data-text="difficulty.easy">簡單</span>
+                    </button>
+                    <button id="medium" class="difficulty-btn">
+                        <i class="fas fa-user-graduate"></i> 
+                        <span data-text="difficulty.medium">普通</span>
+                    </button>
+                    <button id="hard" class="difficulty-btn">
+                        <i class="fas fa-brain"></i> 
+                        <span data-text="difficulty.hard">困難</span>
+                    </button>
+                    <button id="impossible" class="difficulty-btn">
+                        <i class="fas fa-robot"></i> 
+                        <span data-text="difficulty.impossible">不可能</span>
+                    </button>
+                </div>
+                <div class="confirm-container">
+                    <button id="confirm-ai-settings" class="confirm-btn">
+                        <i class="fas fa-check-circle"></i> 
+                        <span data-text="ui.buttons.confirm">確定</span>
+                    </button>
+                </div>
             </div>
+            
             <div id="ai-vs-ai-difficulty" style="display: none;">
                 <div class="ai-side">
                     <h3><i class="fas fa-times"></i> X AI 難度</h3>
-                    <div class="button-group difficulty-buttons">
-                        <button id="x-easy" class="difficulty-btn x-ai-btn"><i class="fas fa-baby"></i> 簡單</button>
-                        <button id="x-medium" class="difficulty-btn x-ai-btn"><i class="fas fa-user-graduate"></i>
-                            普通</button>
-                        <button id="x-hard" class="difficulty-btn x-ai-btn"><i class="fas fa-brain"></i> 困難</button>
-                        <button id="x-impossible" class="difficulty-btn x-ai-btn"><i class="fas fa-robot"></i>
-                            不可能</button>
+                    <div class="difficulty-buttons">
+                        <button id="x-easy" class="difficulty-btn x-ai-btn">
+                            <i class="fas fa-baby"></i> 
+                            <span data-text="difficulty.easy">簡單</span>
+                        </button>
+                        <button id="x-medium" class="difficulty-btn x-ai-btn">
+                            <i class="fas fa-user-graduate"></i> 
+                            <span data-text="difficulty.medium">普通</span>
+                        </button>
+                        <button id="x-hard" class="difficulty-btn x-ai-btn">
+                            <i class="fas fa-brain"></i> 
+                            <span data-text="difficulty.hard">困難</span>
+                        </button>
+                        <button id="x-impossible" class="difficulty-btn x-ai-btn">
+                            <i class="fas fa-robot"></i> 
+                            <span data-text="difficulty.impossible">不可能</span>
+                        </button>
                     </div>
                 </div>
                 <div class="ai-side">
                     <h3><i class="far fa-circle"></i> O AI 難度</h3>
-                    <div class="button-group difficulty-buttons">
-                        <button id="o-easy" class="difficulty-btn o-ai-btn"><i class="fas fa-baby"></i> 簡單</button>
-                        <button id="o-medium" class="difficulty-btn o-ai-btn"><i class="fas fa-user-graduate"></i>
-                            普通</button>
-                        <button id="o-hard" class="difficulty-btn o-ai-btn"><i class="fas fa-brain"></i> 困難</button>
-                        <button id="o-impossible" class="difficulty-btn o-ai-btn"><i class="fas fa-robot"></i>
-                            不可能</button>
+                    <div class="difficulty-buttons">
+                        <button id="o-easy" class="difficulty-btn o-ai-btn">
+                            <i class="fas fa-baby"></i> 
+                            <span data-text="difficulty.easy">簡單</span>
+                        </button>
+                        <button id="o-medium" class="difficulty-btn o-ai-btn">
+                            <i class="fas fa-user-graduate"></i> 
+                            <span data-text="difficulty.medium">普通</span>
+                        </button>
+                        <button id="o-hard" class="difficulty-btn o-ai-btn">
+                            <i class="fas fa-brain"></i> 
+                            <span data-text="difficulty.hard">困難</span>
+                        </button>
+                        <button id="o-impossible" class="difficulty-btn o-ai-btn">
+                            <i class="fas fa-robot"></i> 
+                            <span data-text="difficulty.impossible">不可能</span>
+                        </button>
                     </div>
                 </div>
                 <div class="confirm-container">
-                    <button id="ai-vs-ai-confirm" class="confirm-btn confirm-ai-settings"><i
-                            class="fas fa-check-circle"></i> 確定</button>
+                    <button id="ai-vs-ai-confirm" class="confirm-btn">
+                        <i class="fas fa-check-circle"></i> 
+                        <span data-text="ui.buttons.confirm">確定</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -110,18 +179,20 @@
                 <div class="cell" data-index="7"></div>
                 <div class="cell" data-index="8"></div>
             </div>
-        </div>
-
-        <div class="controls">
-            <div class="game-controls">
-                <button id="new-game"><i class="fas fa-redo-alt"></i> 新遊戲</button>
-                <button id="undo" disabled><i class="fas fa-undo"></i> 悔棋</button>
-                <button id="mute-button"><i class="fas fa-volume-up"></i> 音效：開</button>
+        </div>        <div class="controls">            <div class="game-controls">
+                <button id="new-game">
+                    <i class="fas fa-redo-alt"></i> 
+                    <span data-text="ui.buttons.newGame">新遊戲</span>
+                </button>
+                <button id="undo" disabled>
+                    <i class="fas fa-undo"></i> 
+                    <span data-text="ui.buttons.undo">悔棋</span>
+                </button>
             </div>
         </div>
 
         <footer class="footer">
-            <p>Minimax 演算法實現 | 人工智慧導論 © 2025</p>
+            <p data-text="footer.copyright">Minimax 演算法實現 | 人工智慧導論 © 2025</p>
         </footer>
     </div>
 
@@ -131,24 +202,99 @@
             <h2 id="modal-title"></h2>
             <p id="modal-message"></p>
             <div id="modal-actions">
-                <button id="modal-confirm">確定</button>
+                <button id="modal-confirm" data-text="ui.buttons.confirm">確定</button>
             </div>
         </div>
     </div>
 
+    <!-- 新遊戲設定 Modal -->
+    <div class="modal-setting" id="modal-setting">
+        <div class="modal-setting-content">
+            <button class="modal-setting-close" title="">&times;</button>
+            <div class="modal-setting-title">新遊戲設定</div>
+            <div class="modal-setting-group mode">
+                <span class="modal-setting-label">選擇模式</span>
+                <div class="modal-setting-options">
+                    <button class="modal-setting-option mode" data-mode="human-vs-human"><i class="fas fa-users"></i> 人類對戰</button>
+                    <button class="modal-setting-option mode" data-mode="human-vs-ai"><i class="fas fa-robot"></i> 挑戰 AI</button>
+                    <button class="modal-setting-option mode" data-mode="ai-vs-ai"><i class="fas fa-microchip"></i> AI 對戰</button>
+                </div>
+            </div>
+            <div class="modal-setting-group ai" style="display:none;">
+                <span class="modal-setting-label">選擇 AI 難度</span>
+                <div class="modal-setting-options">
+                    <button class="modal-setting-option ai" data-level="easy">簡單</button>
+                    <button class="modal-setting-option ai" data-level="medium">普通</button>
+                    <button class="modal-setting-option ai" data-level="hard">困難</button>
+                    <button class="modal-setting-option ai" data-level="impossible">不可能</button>
+                </div>
+            </div>            <div class="modal-setting-group xo-ai" style="display:none;">
+                <span class="modal-setting-label">選擇 AI vs AI 難度</span>
+                <div class="xo-ai-container">
+                    <div class="xo-ai-side">
+                        <span class="xo-ai-label x-ai-label">X AI 難度</span>
+                        <div class="modal-setting-options">
+                            <button class="modal-setting-option x-ai" data-level="easy">簡單</button>
+                            <button class="modal-setting-option x-ai" data-level="medium">普通</button>
+                            <button class="modal-setting-option x-ai" data-level="hard">困難</button>
+                            <button class="modal-setting-option x-ai" data-level="impossible">不可能</button>
+                        </div>
+                    </div>
+                    <div class="xo-ai-side">
+                        <span class="xo-ai-label o-ai-label">O AI 難度</span>
+                        <div class="modal-setting-options">
+                            <button class="modal-setting-option o-ai" data-level="easy">簡單</button>
+                            <button class="modal-setting-option o-ai" data-level="medium">普通</button>
+                            <button class="modal-setting-option o-ai" data-level="hard">困難</button>
+                            <button class="modal-setting-option o-ai" data-level="impossible">不可能</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-setting-group symbol" style="display:none;">
+                <span class="modal-setting-label">選擇您的符號</span>
+                <div class="modal-setting-options">
+                    <button class="modal-setting-option symbol" data-symbol="X">X (先手)</button>
+                    <button class="modal-setting-option symbol" data-symbol="O">O (後手)</button>
+                </div>
+            </div>
+            <div class="modal-setting-action">
+                <button id="modal-setting-confirm">開始遊戲</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/textManager.js"></script>
     <script src="js/board.js"></script>
     <script src="js/ai.js"></script>
-    <script src="js/audio.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/game.js"></script>
+    <script src="js/modal.js"></script>
     <script>
-        // 初始化音效管理器
-        window.audioManager = new AudioManager();
-        // 初始化存儲管理器
-        window.gameStorage = new GameStorage();
-        // 初始化遊戲實例
-        window.game = new Game();
+        // 初始化應用
+        (async function initApp() {
+            try {
+                // 載入文字資源
+                await window.textManager.loadTexts();
+                window.textManager.updateAllElements();
+                
+                // 初始化存儲管理器
+                window.gameStorage = new GameStorage();
+                
+                // 初始化模態框
+                window.gameSettingModal = new GameSettingModal();
+                window.gameSettingModal.init();
+                window.gameSettingModal.updateModalContent();
+                
+                // 初始化遊戲實例
+                window.game = new Game();
+                
+                console.log("遊戲已成功初始化");
+            } catch (error) {
+                console.error("初始化應用時出錯:", error);
+            }
+        })();
     </script>
 </body>
 

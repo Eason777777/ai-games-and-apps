@@ -174,12 +174,9 @@ class GameStorage {
             console.error('載入設置失敗:', e);
             return this.getDefaultSettings();
         }
-    }
-
-    // 獲取預設設置
+    }    // 獲取預設設置
     getDefaultSettings() {
         return {
-            soundEnabled: true,
             animationsEnabled: true,
             autoSave: true,
             theme: 'default',

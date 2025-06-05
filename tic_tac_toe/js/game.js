@@ -1,10 +1,10 @@
+// filepath: c:\大學資料\大一下\人工智慧導論\final_project\tic_tac_toe\js\game.js
 class Game {
     constructor() {
         this.board = new Board();
         this.ai = new AI();
         this.ui = new UI();
-        this.audio = new AudioManager();
-        this.storage = new GameStorage();
+        this.storage = window.gameStorage || new GameStorage();
 
         this.gameMode = 'human'; // 'human' 或 'ai'
         this.currentPlayer = 'X'; // X 總是先手
@@ -19,7 +19,9 @@ class Game {
         this.setupEventListeners();
         this.loadSettings();
         this.ui.showMainMenu();
-    } setupEventListeners() {
+    }
+    
+    setupEventListeners() {
         // 注意：UI 類別已經處理了所有事件綁定
         // 這裡只需要設置一些 Game 類別特定的事件監聽器
 
@@ -32,7 +34,9 @@ class Game {
         document.addEventListener('gameReset', () => {
             this.resetGame();
         });
-    } startGame(mode) {
+    }
+    
+    startGame(mode) {
         this.gameMode = mode;
         this.gameActive = true;
         this.currentPlayer = 'X';
@@ -40,22 +44,21 @@ class Game {
         this.board.reset();
         this.ui.updateBoard(this.board);
         this.ui.updateGameStatus(`玩家 ${this.currentPlayer} 的回合`);
-
-        // 播放遊戲開始音效
-        this.audio.playNewGame();
-    } handleCellClick(index) {
+    }
+    
+    handleCellClick(index) {
         if (!this.gameActive) return;
         if (!this.board.makeMove(index, this.currentPlayer)) {
-            this.audio.playError();
             return;
-        }// 記錄移動歷史
+        }
+
+        // 記錄移動歷史
         this.gameHistory.push({
             index: index,
             player: this.currentPlayer,
             boardState: [...this.board.grid]
         });
 
-        this.audio.playPlace();
         this.ui.updateBoard(this.board);
         this.ui.setAnimating(true);
 
@@ -74,7 +77,9 @@ class Game {
         if (this.board.isFull()) {
             this.endGame('tie');
             return;
-        }        // 切換玩家
+        }
+        
+        // 切換玩家
         this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
         this.ui.updateGameStatus(`玩家 ${this.currentPlayer} 的回合`);
 
@@ -82,7 +87,9 @@ class Game {
         if (this.gameMode === 'ai' && this.currentPlayer === 'O') {
             this.makeAIMove();
         }
-    } async makeAIMove() {
+    }
+    
+    async makeAIMove() {
         this.ui.updateGameStatus('AI 思考中...');
         this.ui.showAIThinking();
 
@@ -101,7 +108,6 @@ class Game {
                 boardState: [...this.board.grid]
             });
 
-            this.audio.playPlace();
             this.ui.updateBoard(this.board);
             this.ui.hideAIThinking();
 
@@ -121,34 +127,37 @@ class Game {
             this.currentPlayer = 'X';
             this.ui.updateGameStatus(`玩家 ${this.currentPlayer} 的回合`);
         }
-    }
-
-    endGame(result) {
+    }    endGame(result) {
         this.gameActive = false;
 
         let message = '';
+        let title = '';
         let isWin = false;
 
         if (result === 'tie') {
-            message = '平局！';
-            this.audio.playDraw();
+            title = window.textManager?.getText('ui.messages.gameDraw', '平局！');
+            message = window.textManager?.getText('ui.messages.gameDrawMessage', '遊戲結束，雙方平手！');
         } else if (result === 'X') {
             if (this.gameMode === 'human') {
-                message = '玩家 X 獲勝！';
+                title = window.textManager?.getText('ui.messages.gameVsHumanWin', '{player} 玩家獲勝！').replace('{player}', 'X');
+                message = '玩家 X 取得勝利！';
             } else {
-                message = '你贏了！';
+                title = window.textManager?.getText('ui.messages.gameVsAIWin', '恭喜您獲勝！');
+                message = '恭喜你戰勝了AI對手！';
                 isWin = true;
             }
-            this.audio.playWin();
         } else if (result === 'O') {
             if (this.gameMode === 'human') {
-                message = '玩家 O 獲勝！';
+                title = window.textManager?.getText('ui.messages.gameVsHumanWin', '{player} 玩家獲勝！').replace('{player}', 'O');
+                message = '玩家 O 取得勝利！';
             } else {
-                message = 'AI 獲勝！';
+                title = window.textManager?.getText('ui.messages.gameVsAILose', 'AI 獲勝！');
+                message = 'AI成功預測了您的策略並取得勝利。';
             }
-            this.audio.playWin();  // 使用 playWin 音效
-        } this.ui.updateGameStatus(message);
-        this.ui.showGameEndDialog(message, message);
+        }
+        
+        this.ui.updateGameStatus(title);
+        this.ui.showGameEndDialog(title, message);
 
         // 標記獲勝線
         const winLine = this.board.getWinningLine();
@@ -162,7 +171,9 @@ class Game {
 
     restartGame() {
         this.startGame(this.gameMode);
-    } returnToMenu() {
+    }
+    
+    returnToMenu() {
         this.gameActive = false;
         // 顯示主選單的邏輯（重新顯示模式選擇）
         document.querySelector('.mode-selection').style.display = 'block';
@@ -188,19 +199,17 @@ class Game {
         } else {
             this.board.reset();
             this.currentPlayer = 'X';
-        } this.ui.updateBoard(this.board); this.ui.updateGameStatus(`玩家 ${this.currentPlayer} 的回合`);
-        this.audio.playClick();  // 使用 playClick 音效
+        }
+        
+        this.ui.updateBoard(this.board); 
+        this.ui.updateGameStatus(`玩家 ${this.currentPlayer} 的回合`);
     }
 
-    toggleSound() {
-        const soundEnabled = this.audio.toggle();  // 使用 toggle 方法
-        this.ui.updateSoundButton(soundEnabled);
-        this.storage.updateSetting('soundEnabled', soundEnabled);
-    } loadSettings() {
+    loadSettings() {
         const settings = this.storage.loadSettings();
-        this.audio.setEnabled(settings.soundEnabled);  // 使用 setEnabled 方法
-        this.ui.updateSoundButton(settings.soundEnabled);
-    }// 獲取遊戲統計數據
+    }
+    
+    // 獲取遊戲統計數據
     getGameStats() {
         return this.storage.loadStats();
     }
@@ -213,7 +222,9 @@ class Game {
     // 設置玩家符號
     setPlayerSymbol(symbol) {
         this.playerSymbol = symbol;
-    }    // 設置 AI 難度
+    }
+    
+    // 設置 AI 難度
     setAIDifficulty(difficulty, player = null) {
         if (player) {
             // AI vs AI 模式

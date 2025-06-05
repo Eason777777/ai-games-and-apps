@@ -1,0 +1,493 @@
+/* 歡迎區域與新UI元件專用樣式 */
+
+.welcome-section {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 30px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.welcome-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.welcome-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin-bottom: 18px;
+}
+
+.welcome-description {
+    font-size: 1rem;
+    opacity: 0.85;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+    word-break: keep-all;
+}
+
+.mode-cards-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.mode-card {
+    background: #fff;
+    border-radius: 15px;
+    padding: 22px 18px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    border: 2px solid transparent;
+    min-width: 180px;
+    max-width: 220px;
+    flex: 1 1 180px;
+    transition: all 0.3s cubic-bezier(.4, 0, .2, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #222;
+}
+
+.mode-card:hover,
+.mode-card.active {
+    border-color: #667eea;
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+}
+
+.mode-icon {
+    font-size: 2.2rem;
+    color: #667eea;
+    margin-bottom: 10px;
+}
+
+.mode-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.mode-description {
+    font-size: 0.92rem;
+    color: #666;
+    text-align: center;
+}
+
+.mode-recommend {
+    display: inline-block;
+    background: linear-gradient(90deg, #ffb347, #ffcc33);
+    color: #333;
+    font-size: 0.85rem;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 2px 10px;
+    margin-top: 6px;
+    margin-bottom: 2px;
+}
+
+.quick-start-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 20px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0 8px;
+}
+
+.quick-start-btn:hover {
+    background: #5a6fd8;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.quick-start-btn i {
+    font-size: 1rem;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .welcome-title {
+        font-size: 2rem;
+    }
+    
+    .welcome-subtitle {
+        font-size: 1rem;
+    }
+    
+    .mode-cards-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .mode-card {
+        max-width: 300px;
+        width: 100%;
+    }
+    
+    .quick-start-btn {
+        display: block;
+        margin: 8px auto;
+        width: fit-content;
+    }
+}
+
+@media (max-width: 480px) {
+    .welcome-section {
+        padding: 20px 15px;
+    }
+    
+    .welcome-title {
+        font-size: 1.8rem;
+    }
+      .mode-card {
+        padding: 18px 15px;
+    }
+}
+
+/* 符號選擇區域 */
+.symbol-selection {
+    background: #f8f9ff;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 2px solid #e1e8ff;
+}
+
+.symbol-selection h3 {
+    color: #667eea;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.symbol-selection-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.symbol-btn {
+    background: white;
+    border: 2px solid #e1e8ff;
+    border-radius: 12px;
+    padding: 15px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+    color: #333;
+    min-width: 140px;
+    justify-content: center;
+}
+
+.symbol-btn:hover,
+.symbol-btn.active {
+    border-color: #667eea;
+    background: #f0f4ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.symbol-preview {
+    font-size: 1.4rem;
+    font-weight: bold;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.symbol-preview.x {
+    color: #ff6b6b;
+}
+
+.symbol-preview.o {
+    color: #4ecdc4;
+}
+
+/* AI 難度選擇區域 */
+.ai-difficulty {
+    background: #f8f9ff;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 2px solid #e1e8ff;
+}
+
+.ai-difficulty h2 {
+    color: #667eea;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.difficulty-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.difficulty-btn {
+    background: white;
+    border: 2px solid #e1e8ff;
+    border-radius: 12px;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.95rem;
+    color: #333;
+    min-width: 100px;
+    justify-content: center;
+}
+
+.difficulty-btn:hover,
+.difficulty-btn.active {
+    border-color: #667eea;
+    background: #f0f4ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.difficulty-btn i {
+    font-size: 1rem;
+}
+
+/* AI vs AI 雙方難度選擇 */
+.ai-side {
+    margin-bottom: 20px;
+}
+
+.ai-side h3 {
+    color: #667eea;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.confirm-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.confirm-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 28px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.confirm-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.confirm-btn i {
+    font-size: 1rem;
+}
+
+/* 響應式設計補充 */
+@media (max-width: 768px) {
+    .symbol-selection-buttons,
+    .difficulty-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .symbol-btn,
+    .difficulty-btn {
+        width: 200px;
+        max-width: 90%;
+    }
+}
+
+@media (max-width: 480px) {
+    .symbol-selection,
+    .ai-difficulty {
+        padding: 15px;
+        margin: 15px 0;
+    }
+}
+
+/* 模態框樣式 */
+.modal-setting {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-setting.show {
+    display: flex;
+}
+
+.modal-setting-content {
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px 28px 24px 28px;
+    min-width: 320px;
+    max-width: 95vw;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+    text-align: center;
+    position: relative;
+}
+
+.modal-setting-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 18px;
+}
+
+.modal-setting-close {
+    position: absolute;
+    right: 18px;
+    top: 12px;
+    font-size: 1.5rem;
+    color: #888;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.modal-setting-group {
+    margin-bottom: 18px;
+}
+
+.modal-setting-label {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.modal-setting-options {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.modal-setting-option {
+    background: #f5f6fa;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #333;
+}
+
+.modal-setting-option.active,
+.modal-setting-option:focus {
+    border-color: #667eea;
+    background: #e6eaff;
+    color: #333;
+}
+
+.modal-setting-action {
+    margin-top: 18px;
+}
+
+.modal-setting-action button {
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 32px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.modal-setting-action button:hover {
+    background: linear-gradient(90deg, #5a6edc, #6d4ba2);
+}
+
+/* AI vs AI 模式特別樣式 */
+.xo-ai-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.xo-ai-side {
+    flex: 1 1 280px;
+    min-width: 0;
+}
+
+.xo-ai-label {
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.x-ai-label {
+    color: #ff6b6b;
+}
+
+.o-ai-label {
+    color: #4ecdc4;
+}
+
+/* 響應式調整 */
+@media (max-width: 480px) {
+    .modal-setting-content {
+        padding: 24px 16px 18px;
+    }
+    
+    .xo-ai-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .modal-setting-options {
+        gap: 8px;
+    }
+    
+    .modal-setting-option {
+        padding: 6px 14px;
+        font-size: 0.95rem;
+    }
+}
