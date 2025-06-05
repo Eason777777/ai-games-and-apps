@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 智能平台 - 人工智慧導論期末專案</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-robot"></i>
+                <span>AI 智能平台</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">首頁</a></li>
+                <li><a href="#games" class="nav-link">遊戲</a></li>
+                <li><a href="#apps" class="nav-link">應用</a></li>
+                <li><a href="#about" class="nav-link">關於專案</a></li>
+                <li><a href="#tech" class="nav-link">技術</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    <span class="highlight">AI 驅動</span>的智能平台
+                </h1>
+                <p class="hero-subtitle">
+                    使用 GitHub Copilot 和現代 AI 技術打造的遊戲與應用集合
+                </p>
+                <p class="hero-description">
+                    這是人工智慧導論課程的期末專案，展示如何運用 AI 工具開發完整的遊戲與應用程式
+                </p>
+                <div class="hero-buttons">
+                    <a href="#games" class="btn btn-primary">
+                        <i class="fas fa-gamepad"></i>
+                        開始遊戲
+                    </a>
+                    <a href="#apps" class="btn btn-primary">
+                        <i class="fas fa-laptop-code"></i>
+                        使用應用
+                    </a>
+                    <a href="#about" class="btn btn-secondary">
+                        <i class="fas fa-info-circle"></i>
+                        了解更多
+                    </a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="floating-icons">
+                    <div class="icon-item"><i class="fas fa-chess"></i></div>
+                    <div class="icon-item"><i class="fas fa-robot"></i></div>
+                    <div class="icon-item"><i class="fas fa-brain"></i></div>
+                    <div class="icon-item"><i class="fas fa-gamepad"></i></div>
+                </div>
+            </div>
+        </div>
+    </section> <!-- Games Section -->
+    <section id="games" class="games-section">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-gamepad"></i>
+                遊戲專區
+            </h2>
+            <p class="section-subtitle">體驗 AI 技術帶來的智能遊戲對戰</p>
+            <div class="games-grid">
+                <!-- Reversi Game Card -->
+                <div class="game-card available">
+                    <div class="game-header">
+                        <div class="game-icon">
+                            <i class="fas fa-chess"></i>
+                        </div>
+                        <div class="game-status">
+                            <span class="status-badge available">已完成</span>
+                        </div>
+                    </div>
+                    <div class="game-content">
+                        <h3>黑白棋 (Reversi)</h3>
+                        <p>採用 Minimax 演算法的智能 AI 對手，支援多種難度等級和遊戲模式</p>
+                        <div class="game-features">
+                            <span class="feature-tag">Minimax AI</span>
+                            <span class="feature-tag">多種難度</span>
+                            <span class="feature-tag">即時對戰</span>
+                        </div>
+                    </div>
+                    <div class="game-actions">
+                        <a href="reversi/index.html" class="btn btn-play">
+                            <i class="fas fa-play"></i>
+                            立即遊玩
+                        </a>
+                        <button class="btn btn-info" onclick="showGameInfo('reversi')">
+                            <i class="fas fa-info"></i>
+                            詳細資訊
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Reversi New Game Card -->
+                <div class="game-card available">
+                    <div class="game-header">
+                        <div class="game-icon">
+                            <i class="fas fa-chess-board"></i>
+                        </div>
+                        <div class="game-status">
+                            <span class="status-badge available">已完成</span>
+                        </div>
+                    </div>
+                    <div class="game-content">
+                        <h3>黑白棋進階版 (Reversi New)</h3>
+                        <p>優化UI設計，提供更佳的遊戲體驗和視覺效果</p>
+                        <div class="game-features">
+                            <span class="feature-tag">優化UI</span>
+                            <span class="feature-tag">視覺特效</span>
+                            <span class="feature-tag">流暢體驗</span>
+                        </div>
+                    </div>
+                    <div class="game-actions">
+                        <a href="reversi_new/index.html" class="btn btn-play">
+                            <i class="fas fa-play"></i>
+                            立即遊玩
+                        </a>
+                        <button class="btn btn-info" onclick="showGameInfo('reversi_new')">
+                            <i class="fas fa-info"></i>
+                            詳細資訊
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tic-tac-toe Game Card -->
+                <div class="game-card available">
+                    <div class="game-header">
+                        <div class="game-icon">
+                            <i class="fas fa-th"></i>
+                        </div>
+                        <div class="game-status">
+                            <span class="status-badge available">已完成</span>
+                        </div>
+                    </div>
+                    <div class="game-content">
+                        <h3>井字遊戲 (Tic-tac-toe)</h3>
+                        <p>經典的策略遊戲，配備智能 Minimax 演算法 AI</p>
+                        <div class="game-features">
+                            <span class="feature-tag">Minimax AI</span>
+                            <span class="feature-tag">多難度</span>
+                            <span class="feature-tag">經典玩法</span>
+                        </div>
+                    </div>
+                    <div class="game-actions">
+                        <a href="tic_tac_toe/index.html" class="btn btn-play">
+                            <i class="fas fa-play"></i>
+                            立即遊玩
+                        </a>
+                        <button class="btn btn-info" onclick="showGameInfo('tictactoe')">
+                            <i class="fas fa-info"></i>
+                            詳細資訊
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Applications Section -->
+    <section id="apps" class="apps-section">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-laptop-code"></i>
+                應用專區
+            </h2>
+            <p class="section-subtitle">AI 驅動的學習與工具應用程式</p>
+            <div class="games-grid">
+                <!-- English Learning App Card -->
+                <div class="game-card available">
+                    <div class="game-header">
+                        <div class="game-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="game-status">
+                            <span class="status-badge available">已完成</span>
+                        </div>
+                    </div>
+                    <div class="game-content">
+                        <h3>英語學習應用</h3>
+                        <p>互動式英語學習平台，包含測驗、配對遊戲等功能</p>
+                        <div class="game-features">
+                            <span class="feature-tag">互動學習</span>
+                            <span class="feature-tag">單詞測驗</span>
+                            <span class="feature-tag">配對遊戲</span>
+                        </div>
+                    </div>
+                    <div class="game-actions">
+                        <a href="english_learning/index.html" class="btn btn-play">
+                            <i class="fas fa-play"></i>
+                            開始學習
+                        </a>
+                        <button class="btn btn-info" onclick="showGameInfo('english_learning')">
+                            <i class="fas fa-info"></i>
+                            詳細資訊
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2 class="section-title">
+                        <i class="fas fa-lightbulb"></i>
+                        關於這個專案
+                    </h2>
+                    <p class="about-description">
+                        這是一個展示 AI 工具在現代軟體開發中應用的專案。我們使用 GitHub Copilot 作為主要的 AI 程式設計助手，
+                        從遊戲邏輯設計、AI 演算法實作，到使用者介面開發，全程採用 AI 輔助開發的方式。
+                    </p>
+                    <div class="about-highlights">
+                        <div class="highlight-item">
+                            <i class="fas fa-code"></i>
+                            <div>
+                                <h4>AI 輔助開發</h4>
+                                <p>全程使用 GitHub Copilot 進行程式開發</p>
+                            </div>
+                        </div>
+                        <div class="highlight-item">
+                            <i class="fas fa-brain"></i>
+                            <div>
+                                <h4>智能演算法</h4>
+                                <p>實作 Minimax 和 Alpha-Beta 剪枝等傳統 AI 演算法</p>
+                            </div>
+                        </div>
+                        <div class="highlight-item">
+                            <i class="fas fa-globe"></i>
+                            <div>
+                                <h4>網頁部署</h4>
+                                <p>使用 GitHub Pages 進行線上部署</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-stats">
+                    <div class="stat-card">
+                        <div class="stat-number">4</div>
+                        <div class="stat-label">專案作品</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">AI 輔助開發</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">3</div>
+                        <div class="stat-label">遊戲類型</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">1</div>
+                        <div class="stat-label">學習應用</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Section -->
+    <section id="tech" class="tech-section">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-cogs"></i>
+                技術棧
+            </h2>
+            <p class="section-subtitle">專案中使用的技術和工具</p>
+
+            <div class="tech-grid">
+                <div class="tech-category">
+                    <h3><i class="fas fa-code"></i> 前端技術</h3>
+                    <div class="tech-items">
+                        <div class="tech-item">
+                            <i class="fab fa-html5"></i>
+                            <span>HTML5</span>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fab fa-css3-alt"></i>
+                            <span>CSS3</span>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fab fa-js-square"></i>
+                            <span>JavaScript</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tech-category">
+                    <h3><i class="fas fa-robot"></i> AI 技術</h3>
+                    <div class="tech-items">
+                        <div class="tech-item">
+                            <i class="fas fa-brain"></i>
+                            <span>Minimax</span>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fas fa-sitemap"></i>
+                            <span>Alpha-Beta 剪枝</span>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fab fa-github"></i>
+                            <span>GitHub Copilot</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tech-category">
+                    <h3><i class="fas fa-tools"></i> 開發工具</h3>
+                    <div class="tech-items">
+                        <div class="tech-item">
+                            <i class="fab fa-git-alt"></i>
+                            <span>Git</span>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fab fa-github"></i>
+                            <span>GitHub Pages</span>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fas fa-code-branch"></i>
+                            <span>VS Code</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <div class="footer-logo">
+                        <i class="fas fa-robot"></i>
+                        <span>AI 智能平台</span>
+                    </div>
+                    <p>人工智慧導論課程期末專案</p>
+                </div>
+                <div class="footer-links">
+                    <a href="https://github.com" target="_blank">
+                        <i class="fab fa-github"></i>
+                        GitHub
+                    </a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AI 智能平台. 使用 GitHub Copilot 製作.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Game Info Modal -->
+    <div id="gameModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+    <script src="js/script.js"></script>
+</body>
+
+</html>

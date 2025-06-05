@@ -1,0 +1,96 @@
+{
+    "welcome": {
+        "title": "黑白棋",
+        "subtitle": "Minimax AI 智能系統",
+        "description": "體驗經典的黑白棋遊戲，挑戰不同難度的 Minimax AI 對手，或觀看 AI 自我對弈的精彩對局"
+    },
+    "modes": {
+        "humanVsHuman": {
+            "title": "人類對戰",
+            "description": "與朋友面對面對弈，享受經典樂趣"
+        },
+        "humanVsAI": {
+            "title": "挑戰 AI",
+            "description": "測試您的策略技巧，與 Minimax AI 一較高下",
+            "recommend": "推薦"
+        },
+        "aiVsAI": {
+            "title": "AI 對戰",
+            "description": "觀看兩個 AI 的精彩對局，學習頂級策略"
+        }
+    },
+    "ui": {
+        "buttons": {
+            "viewRules": "查看規則",
+            "viewAbout": "關於本專案",
+            "newGame": "新遊戲",
+            "undo": "悔棋",
+            "confirm": "確認",
+            "viewRecord": "查看棋譜"
+        },
+        "messages": {
+            "notImplemented": "功能未實作",
+            "viewRecordNotImplemented": "查看棋譜功能尚未實作，敬請期待！"
+        },
+        "gameStatus": {
+            "blackTurn": "黑方回合",
+            "whiteTurn": "白方回合",
+            "gameOver": "遊戲結束",
+            "draw": "平局",
+            "blackWins": "黑方獲勝",
+            "whiteWins": "白方獲勝"
+        },
+        "aiDifficulty": {
+            "easy": "簡單",
+            "medium": "普通",
+            "hard": "困難",
+            "superHard": "超難?"
+        },
+        "aiDifficultyDescription": {
+            "easy": "適合新手，AI 會選擇基本策略",
+            "medium": "中等難度，AI 使用改進的評估算法",
+            "hard": "高級難度，AI 採用深度搜索策略",
+            "superHard": "最高難度，採用深度 Minimax 搜索策略"
+        }
+    },
+    "modal": {
+        "newGameSettings": "新遊戲設定",
+        "selectMode": "選擇模式",
+        "battleMode": "對戰模式",
+        "gameMode": "遊戲模式",
+        "aiDifficulty": "AI 難度",
+        "blackAiDifficulty": "黑子 AI 難度",
+        "whiteAiDifficulty": "白子 AI 難度",
+        "playerColor": "選擇您的棋子顏色",
+        "blackFirst": "黑子 (先手)",
+        "whiteSecond": "白子 (後手)",
+        "startGame": "開始遊戲",
+        "confirm": "確定",
+        "close": "關閉"
+    },
+    "notifications": {
+        "cannotMove": "{player}沒有可走的步，輪到{nextPlayer}",
+        "aiThinking": "AI 思考中...",
+        "gameRulesTitle": "黑白棋遊戲規則",
+        "loadError": "載入失敗，請稍後再試",
+        "error": "錯誤",
+        "closeNotification": "關閉通知"
+    },
+    "undo": {
+        "cannotUndo": "無法悔棋",
+        "aiVsAiNoUndo": "AI對戰模式不支援悔棋功能。",
+        "needMinimumMoves": "需要至少完成一輪對戰才能悔棋。"
+    },
+    "game": {
+        "players": {
+            "black": "黑子",
+            "white": "白子"
+        },
+        "result": {
+            "draw": "平局"
+        }
+    },
+    "footer": {
+        "copyright": "Minimax AI 智能系統 | 人工智慧導論 © 2025"
+    }
+}

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>英文單字複習系統</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/browse.css">
+    <link rel="stylesheet" href="css/quiz.css">
+    <link rel="stylesheet" href="css/matching.css">
+    <link rel="stylesheet" href="css/definition-matching.css">
+    <link rel="stylesheet" href="css/quizlet.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1><i class="fas fa-book"></i> 英文單字複習系統</h1>
+            <div class="header-controls">
+                <div class="stats">
+                    <div class="stat">
+                        <span>總單字：</span>
+                        <span id="totalWords">0</span>
+                    </div>
+                    <div class="stat">
+                        <span>已學習：</span>
+                        <span id="learnedWords">0</span>
+                    </div>
+                </div>                <button id="clearCacheBtn" class="btn-cache" title="清除所有快取資料">
+                    <i class="fas fa-broom"></i>
+                    清除快取
+                </button>
+                <button id="aboutBtn" class="btn-about" title="關於本專案">
+                    <i class="fas fa-info-circle"></i>
+                    關於
+                </button>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav">
+            <button class="nav-btn active" data-page="home">
+                <i class="fas fa-home"></i>
+                首頁
+            </button> <button class="nav-btn" data-page="quizlet">
+                <i class="fas fa-layer-group"></i>
+                Quizlet 複習
+            </button> <button class="nav-btn" data-page="matching">
+                <i class="fas fa-puzzle-piece"></i>
+                配對遊戲
+            </button>
+            <button class="nav-btn" data-page="definition-matching">
+                <i class="fas fa-link"></i>
+                字義配對
+            </button>
+            <button class="nav-btn" data-page="quiz">
+                <i class="fas fa-question-circle"></i>
+                測驗練習
+            </button>
+            <button class="nav-btn" data-page="browse">
+                <i class="fas fa-list"></i>
+                瀏覽單字
+            </button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Home Page -->
+            <div id="home" class="page active">
+                <div class="welcome">
+                    <h2>歡迎使用英文單字複習系統</h2>
+                    <p>選擇你想要的學習模式開始練習吧！</p>
+                </div>
+
+                <div class="mode-grid">
+                    <div class="mode-card" data-page="quizlet">
+                        <i class="fas fa-layer-group"></i>
+                        <h3>Quizlet 複習</h3>
+                        <p>翻卡片式的單字複習，支援多種顯示模式</p>
+                    </div>
+                    <div class="mode-card" data-page="matching">
+                        <i class="fas fa-puzzle-piece"></i>
+                        <h3>配對遊戲</h3>
+                        <p>中英文配對練習，提升記憶效果</p>
+                    </div>
+
+                    <div class="mode-card" data-page="definition-matching">
+                        <i class="fas fa-link"></i>
+                        <h3>字義配對</h3>
+                        <p>英文單字與定義配對，加強理解能力</p>
+                    </div>
+
+                    <div class="mode-card" data-page="quiz">
+                        <i class="fas fa-question-circle"></i>
+                        <h3>測驗練習</h3>
+                        <p>多種題型測驗，檢驗學習成果</p>
+                    </div>
+
+                    <div class="mode-card" data-page="browse">
+                        <i class="fas fa-list"></i>
+                        <h3>瀏覽單字</h3>
+                        <p>查看所有單字列表和詳細資訊</p>
+                    </div>
+                </div>
+            </div> <!-- Quizlet Style Review -->
+            <div id="quizlet" class="page">
+                <button class="page-settings-btn" onclick="openSettingsModal('quizlet')" title="設定">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <div class="page-header">
+                    <h2><i class="fas fa-layer-group"></i> Quizlet 複習</h2>
+                </div>
+
+                <div class="flashcard-container">
+                    <div class="flashcard" id="flashcard">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <div class="card-content">
+                                    <p id="cardFront">點擊開始複習</p>
+                                </div>
+                            </div>
+                            <div class="card-back">
+                                <div class="card-content">
+                                    <p id="cardBack">答案會顯示在這裡</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-controls">
+                        <button id="prevCard" class="btn-secondary">
+                            <i class="fas fa-chevron-left"></i> 上一張
+                        </button>
+                        <span id="cardProgress">0 / 0</span>
+                        <button id="nextCard" class="btn-secondary">
+                            下一張 <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+
+                    <div class="difficulty-buttons">
+                        <button class="difficulty-btn hard" data-difficulty="hard">
+                            <i class="fas fa-times"></i> 困難
+                        </button>
+                        <button class="difficulty-btn medium" data-difficulty="medium">
+                            <i class="fas fa-circle"></i> 普通
+                        </button>
+                        <button class="difficulty-btn easy" data-difficulty="easy">
+                            <i class="fas fa-check"></i> 簡單
+                        </button>
+                    </div>
+                </div>
+            </div> <!-- Matching Game -->
+            <div id="matching" class="page">
+                <button class="page-settings-btn" onclick="openSettingsModal('matching')" title="設定">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <div class="page-header">
+                    <h2>配對遊戲</h2>
+                </div>
+
+                <div class="matching-stats">
+                    <div class="stat">配對完成：<span id="matchedCount">0</span></div>
+                    <div class="stat">剩餘：<span id="remainingCount">0</span></div>
+                    <div class="stat">時間：<span id="gameTime">00:00</span></div>
+                </div>
+
+                <div id="matchingGrid" class="matching-grid"></div>
+
+                <div id="matchingResult" class="result-overlay hidden">
+                    <div class="result-content">
+                        <h3>恭喜完成！</h3>
+                        <p>完成時間：<span id="finalTime"></span></p>
+                        <button id="playAgain" class="btn-primary">再玩一次</button>
+                    </div>
+                </div>
+            </div> <!-- Quiz Practice -->
+            <div id="quiz" class="page">
+                <button class="page-settings-btn" onclick="openSettingsModal('quiz')" title="設定">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <div class="page-header">
+                    <h2>測驗練習</h2>
+                </div>
+
+                <div id="quizContainer" class="quiz-container hidden">
+                    <div class="quiz-header">
+                        <div class="quiz-progress">
+                            <div class="progress-bar">
+                                <div id="progressFill" class="progress-fill"></div>
+                            </div>
+                            <span id="quizProgress">1 / 20</span>
+                        </div>
+                        <div class="quiz-score">得分：<span id="currentScore">0</span></div>
+                    </div>
+
+                    <div id="questionContainer" class="question-container">
+                        <h3 id="questionText">題目會顯示在這裡</h3>
+                        <div id="optionsContainer" class="options-container"></div>
+                        <button id="submitAnswer" class="btn-primary" disabled>提交答案</button>
+                    </div>
+                </div>
+                <div id="quizResult" class="result-overlay hidden">
+                    <div class="result-content">
+                        <h3>測驗完成！</h3>
+                        <p>總得分：<span id="finalScore"></span> / <span id="totalQuestions"></span></p>
+                        <p>正確率：<span id="accuracy"></span>%</p> <!-- Result Actions -->
+                        <div class="result-actions">
+                            <button id="viewAnswers" class="btn-secondary">查看答案</button>
+                            <button id="retakeQuiz" class="btn-primary">重新測驗</button>
+                            <button id="closeResult" class="btn-outline">返回首頁</button>
+                        </div>
+                        <!-- Wrong Answers Summary -->
+                        <div id="wrongAnswersSummary" class="wrong-answers-summary"></div>
+                    </div>
+                </div>
+            </div> <!-- Definition Matching Game -->
+            <div id="definition-matching" class="page">
+                <button class="page-settings-btn" onclick="openSettingsModal('definition-matching')" title="設定">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <div class="page-header">
+                    <h2><i class="fas fa-link"></i> 字義配對</h2>
+                </div>
+
+                <div class="definition-matching-stats">
+                    <div class="stat">配對完成：<span id="definitionMatchedCount">0</span></div>
+                    <div class="stat">剩餘：<span id="definitionRemainingCount">0</span></div>
+                    <div class="stat">時間：<span id="definitionGameTime">00:00</span></div>
+                </div>
+
+                <div class="definition-matching-container">
+                    <div class="definitions-column">
+                        <h3>字義定義</h3>
+                        <div id="definitionsGrid" class="definitions-grid"></div>
+                    </div>
+                    <div class="words-column">
+                        <h3>英文單字</h3>
+                        <div id="definitionWordsGrid" class="words-grid-matching"></div>
+                    </div>
+                </div>
+
+                <div id="definitionMatchingResult" class="result-overlay hidden">
+                    <div class="result-content">
+                        <h3>恭喜完成！</h3>
+                        <p>完成時間：<span id="definitionFinalTime"></span></p>
+                        <button id="playDefinitionAgain" class="btn-primary">再玩一次</button>
+                        <button id="showAnswers" class="btn-secondary">查看答案</button>
+                    </div>
+                </div>
+
+                <div id="answersModal" class="modal hidden">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2>本輪答案</h2>
+                        <div id="answersContent" class="answers-content"></div>
+                    </div>
+                </div>
+            </div> <!-- Browse Words -->
+            <div id="browse" class="page">
+                <div class="page-header">
+                    <h2>瀏覽單字</h2>
+                </div>
+
+                <div class="controls">
+                    <select id="browseUnit">
+                        <option value="all">所有單元</option>
+                    </select>
+                    <input type="search" id="searchInput" placeholder="搜尋單字或中文...">
+                    <button id="resetSearch" class="btn-secondary">重置</button>
+                </div>
+
+                <div class="words-grid" id="wordsGrid"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Word Detail Modal -->
+    <div id="wordModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modalWord"></h2>
+            <p class="definition" id="modalDefinition"></p>
+            <p class="chinese" id="modalChinese"></p>
+            <div class="modal-actions">
+                <button id="markAsLearned" class="btn-primary">標記為已學習</button>
+            </div>
+        </div>
+    </div>    <!-- 設定模態框 -->
+    <div id="settingsModal" class="settings-modal">
+        <div class="settings-content">
+            <button class="close-settings" onclick="closeSettingsModal()">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="settings-header">
+                <h3 id="settingsTitle">
+                    <i class="fas fa-cog"></i>
+                    功能設定
+                </h3>
+            </div>
+
+            <div id="settingsBody">
+                <!-- 動態內容將在這裡插入 -->
+            </div>
+
+            <div class="settings-actions">
+                <button class="settings-btn secondary" onclick="closeSettingsModal()">
+                    取消
+                </button>
+                <button class="settings-btn primary" id="confirmSettings">
+                    開始
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 關於本專案模態框 -->
+    <div id="aboutModal" class="modal hidden">
+        <div class="modal-content about-modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-info-circle"></i> 關於本專案</h3>
+                <button class="close-modal" id="closeAboutModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="aboutContent" class="about-content">
+                    <div class="loading-indicator">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        載入中...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/data.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/quizlet.js"></script>
+    <script src="js/matching.js"></script>
+    <script src="js/definition-matching.js"></script>
+    <script src="js/quiz.js"></script>
+    <script src="js/browse.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

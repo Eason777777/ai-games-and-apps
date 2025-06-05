@@ -1,0 +1,5 @@
+這是人工智慧導論課程的期末專案
+期末專案的題目是使用AI工具做出想做的事物
+我的發想是使用github copilot 製作網頁，並在github pages上執行
+而我目前完成了reversi、reversi_new(ui優化)、english_learning的網頁，預計再加一個 tic_tac_toe遊戲網頁，tic_tac_toe 遊戲網頁請不要用深度學習，ui模仿reversi_new
+我想要在這個final_project做一個專案主頁面，最後上傳至github 上 deploy 成github pages

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-text="welcome.title">黑白棋</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/ai_difficulty.css">
+    <link rel="stylesheet" href="css/welcome.css">
+    <link rel="stylesheet" href="css/replay.css">
+    <link rel="stylesheet" href="css/markdown.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- 通知容器 -->
+    <div id="notification-container" class="notification-container"></div>
+
+    <div class="container"> <!-- 歡迎區域 -->
+        <div class="welcome-section">
+            <div class="welcome-title"><i class="fas fa-chess"></i> </div>
+            <div class="welcome-subtitle"></div>
+            <div class="welcome-description">
+            </div>
+        </div> <!-- 模式卡片區 -->
+        <div class="mode-cards-container">
+            <div class="mode-card" id="card-human-vs-human" data-mode="human-vs-human">
+                <div class="mode-icon"><i class="fas fa-users"></i></div>
+                <div class="mode-title"></div>
+                <div class="mode-description"></div>
+            </div>
+            <div class="mode-card" id="card-human-vs-ai" data-mode="human-vs-ai">
+                <div class="mode-icon"><i class="fas fa-robot"></i></div>
+                <div class="mode-title"> <span class="mode-recommend"></span></div>
+                <div class="mode-description"></div>
+            </div>
+            <div class="mode-card" id="card-ai-vs-ai" data-mode="ai-vs-ai">
+                <div class="mode-icon"><i class="fas fa-microchip"></i></div>
+                <div class="mode-title"></div>
+                <div class="mode-description"></div>
+            </div>
+        </div>        <div style="text-align:center;margin-bottom:18px;">
+            <button id="view-rules" class="quick-start-btn"><i class="fas fa-book"></i> </button>
+            <button id="view-about" class="quick-start-btn"><i class="fas fa-info-circle"></i> 關於本專案</button>
+        </div><!-- 遊戲資訊顯示 -->
+        <div class="game-info">
+            <div class="player-info">
+                <div class="player-icon black-player"></div>
+                <span id="game-status"></span>
+            </div>
+            <div id="score">
+                <div class="score-box">
+                    <div class="piece-icon black"></div>
+                    <span id="black-score">2</span>
+                </div>
+                <span class="score-divider">:</span>
+                <div class="score-box">
+                    <div class="piece-icon white"></div>
+                    <span id="white-score">2</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="board-container">
+            <div id="board"></div>
+        </div>
+        <div class="controls">
+            <div class="game-controls">
+                <button id="new-game"><i class="fas fa-redo-alt"></i> </button>
+                <button id="undo" disabled><i class="fas fa-undo"></i> </button>
+            </div>
+        </div>
+        <footer class="footer">
+            <p></p>
+        </footer>
+    </div> <!-- 新遊戲設定 Modal -->
+    <div class="modal-setting" id="modal-setting">
+        <div class="modal-setting-content">
+            <button class="modal-setting-close" title="">&times;</button>
+            <div class="modal-setting-title"></div>
+            <div class="modal-setting-group mode">
+                <span class="modal-setting-label"></span>
+                <div class="modal-setting-options">
+                    <button class="modal-setting-option mode" data-mode="human-vs-human"><i class="fas fa-users"></i>
+                    </button>
+                    <button class="modal-setting-option mode" data-mode="human-vs-ai"><i class="fas fa-robot"></i>
+                    </button>
+                    <button class="modal-setting-option mode" data-mode="ai-vs-ai"><i class="fas fa-microchip"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-setting-group ai" style="display:none;">
+                <span class="modal-setting-label"></span>
+                <div class="modal-setting-options">
+                    <button class="modal-setting-option ai" data-level="easy"></button>
+                    <button class="modal-setting-option ai" data-level="medium"></button>
+                    <button class="modal-setting-option ai" data-level="hard"></button>
+                    <button class="modal-setting-option ai" data-level="super-hard"></button>
+                </div>
+            </div>
+            <div class="modal-setting-group color" style="display:none;">
+                <span class="modal-setting-label"></span>
+                <div class="modal-setting-options">
+                    <button class="modal-setting-option color" data-color="black"></button>
+                    <button class="modal-setting-option color" data-color="white"></button>
+                </div>
+            </div>
+            <div class="modal-setting-action">
+                <button id="modal-setting-confirm"></button>
+            </div>
+        </div>
+    </div> <!-- 基本通知Modal (用於簡單消息和跳過回合) -->
+    <div class="modal" id="notification-modal">
+        <div class="modal-content">
+            <span class="close-button" id="notification-close">&times;</span>
+            <h2 id="notification-title"></h2>
+            <p id="notification-message"></p>
+            <div id="notification-actions">
+                <button id="notification-confirm">確認</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 遊戲規則Modal -->
+    <div class="modal" id="rules-modal">
+        <div class="modal-content">
+            <span class="close-button" id="rules-close">&times;</span>
+            <h2 id="rules-title"></h2>
+            <div id="rules-content"></div>
+            <div id="rules-actions">
+                <button id="rules-confirm">知道了</button>
+            </div>
+        </div>    </div>
+
+    <!-- 關於本專案Modal -->
+    <div class="modal" id="about-modal">
+        <div class="modal-content">
+            <span class="close-button" id="about-close">&times;</span>
+            <h2 id="about-title">關於本專案</h2>
+            <div id="about-content" class="markdown-content"></div>
+            <div id="about-actions">
+                <button id="about-confirm">知道了</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 遊戲結束Modal (用於多按鈕的複雜操作) -->
+    <div class="modal" id="game-end-modal">
+        <div class="modal-content">
+            <span class="close-button" id="game-end-close">&times;</span>
+            <h2 id="game-end-title"></h2>
+            <div id="game-end-message"></div>
+            <div id="game-end-actions">
+                <!-- 動態生成按鈕 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 回放模態框 -->
+    <div id="replay-modal" class="modal replay-modal">
+        <div class="modal-content replay-content">
+            <!-- 標題列 -->
+            <div class="replay-header">
+                <h2><i class="fas fa-play-circle"></i> 棋譜回放</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <!-- 回放區域 - 水平分割佈局 -->
+            <div class="replay-body">
+                <!-- 左側棋盤區域 -->
+                <div class="replay-board-section">
+                    <div class="replay-board-container">
+                        <div id="replay-board" class="board"></div>
+                    </div>
+                </div>
+
+                <!-- 右側控制面板 -->
+                <div class="replay-control-panel">
+                    <!-- 遊戲狀態區域 -->
+                    <div class="game-status-section">
+                        <div class="game-status-title">遊戲資訊</div>
+                        <div class="game-info-panel">
+                            <div class="game-info-row">
+                                <span class="game-info-label">遊戲模式：</span>
+                                <span class="game-info-value" id="replay-game-mode">-</span>
+                            </div>
+                            <div class="game-info-row">
+                                <span class="game-info-label">最終結果：</span>
+                                <span class="game-info-value" id="replay-result">-</span>
+                            </div>
+                            <div class="game-info-row">
+                                <span class="game-info-label">當前比分：</span>
+                                <span class="game-info-value">
+                                    <div id="replay-current-score" class="current-score">
+                                        <span class="score-item">
+                                            <span class="score-color black"></span>
+                                            <span id="replay-black-score">2</span>
+                                        </span>
+                                        <span class="score-separator">:</span>
+                                        <span class="score-item">
+                                            <span class="score-color white"></span>
+                                            <span id="replay-white-score">2</span>
+                                        </span>
+                                    </div>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 播放控制區域 -->
+                    <div class="playback-controls-section">
+                        <div class="controls-title">播放控制</div>
+                        <div class="control-buttons">
+                            <button id="replay-start" class="control-btn" title="跳到開始">
+                                <i class="fas fa-step-backward"></i>
+                            </button>
+                            <button id="replay-prev" class="control-btn" title="上一步">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button id="replay-play" class="control-btn play-pause" title="播放">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <button id="replay-next" class="control-btn" title="下一步">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                            <button id="replay-end" class="control-btn" title="跳到結束">
+                                <i class="fas fa-step-forward"></i>
+                            </button>
+                        </div>
+                        <div class="speed-control">
+                            <label>播放速度：</label>
+                            <select id="replay-speed">
+                                <option value="1">1x</option>
+                                <option value="2">2x</option>
+                                <option value="3">3x</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 時間軸區域 -->
+                    <div class="timeline-section">
+                        <div class="timeline-title">時間軸</div>
+                        <div class="progress-container">
+                            <input type="range" id="replay-progress" class="progress-slider" min="0" max="100"
+                                value="0">
+                            <div class="progress-info">
+                                第 <span id="current-step">0</span> 步 / 共 <span id="total-steps">0</span> 步
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/textManager.js"></script>
+    <script src="js/board.js"></script>
+    <script src="js/reversi_ai.js"></script>
+    <script src="js/ai.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/replay.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/modal.js"></script>
+    <script>
+        // 初始化應用程式
+        async function initializeApp() {
+            // 載入文字資源
+            await window.textManager.loadTexts();
+            // 更新UI文字
+            window.textManager.updateUI();            // 初始化其他組件
+            window.gameStorage = new GameStorage();
+            window.reversiAI = new ReversiAI();
+            window.game = new Game();
+            window.gameSettingModal = new GameSettingModal();
+            window.gameSettingModal.init();// 確保模態框文本已更新
+            if (window.gameSettingModal.updateModalContent) {
+                window.gameSettingModal.updateModalContent();
+            }
+
+            // 開發者測試工具 - 在控制台中可用
+            window.testGameEndModal = () => {
+                if (window.game && window.game.ui) {
+                    window.game.ui.testGameEndModal();
+                }
+            };
+
+            console.log('🎮 黑白棋遊戲已載入！');
+            console.log('💡 開發者提示：在控制台執行 testGameEndModal() 可測試遊戲結束模態視窗');
+        }
+
+        // 當DOM載入完成後初始化應用程式
+        document.addEventListener('DOMContentLoaded', initializeApp);
+    </script>
+</body>
+
+</html>

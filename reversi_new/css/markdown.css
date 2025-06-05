@@ -1,0 +1,474 @@
+/* Markdown 樣式支援 - 專門為規則文檔和其他Markdown內容設計 */
+
+/* 基礎Markdown容器 */
+.markdown-content {
+    font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: none;
+}
+
+/* 當 markdown-content 應用在模態視窗內容區域時，重置 padding */
+#rules-content.markdown-content {
+    padding: 0;
+}
+
+/* 標題層次 */
+.markdown-content h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #1a365d;
+    border-bottom: 3px solid #3182ce;
+    padding-bottom: 12px;
+    margin: 30px 0 20px 0;
+    text-align: center;
+}
+
+.markdown-content h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin: 25px 0 15px 0;
+    padding: 10px 0 8px 15px;
+    background: linear-gradient(90deg, #4299e1 0%, #63b3ed 100%);
+    background-size: 5px 100%;
+    background-repeat: no-repeat;
+    border-left: 5px solid #4299e1;
+    position: relative;
+}
+
+.markdown-content h2::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background: linear-gradient(180deg, #4299e1, #63b3ed);
+    animation: shimmer 2s ease-in-out infinite alternate;
+}
+
+.markdown-content h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #4a5568;
+    margin: 20px 0 12px 0;
+    padding-left: 12px;
+    border-left: 4px solid #a0aec0;
+    position: relative;
+}
+
+.markdown-content h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #718096;
+    margin: 18px 0 10px 0;
+    padding-left: 8px;
+    border-left: 3px solid #cbd5e0;
+}
+
+.markdown-content h5 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #a0aec0;
+    margin: 15px 0 8px 0;
+}
+
+.markdown-content h6 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #cbd5e0;
+    margin: 12px 0 6px 0;
+}
+
+/* 段落 */
+.markdown-content p {
+    margin: 12px 0;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #4a5568;
+}
+
+/* 強調文字 */
+.markdown-content strong {
+    font-weight: 700;
+    color: #2d3748;
+}
+
+.markdown-content em {
+    font-style: italic;
+    color: #805ad5;
+}
+
+.markdown-content code {
+    background: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 0.9em;
+    color: #d69e2e;
+}
+
+/* 列表樣式 */
+.markdown-content ul {
+    margin: 15px 0;
+    padding-left: 25px;
+    list-style: none;
+}
+
+.markdown-content ul li {
+    margin: 8px 0;
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.6;
+}
+
+.markdown-content ul li::before {
+    content: '●';
+    color: #4299e1;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.markdown-content ol {
+    margin: 15px 0;
+    padding-left: 30px;
+    counter-reset: item;
+}
+
+.markdown-content ol li {
+    margin: 8px 0;
+    padding-left: 10px;
+    position: relative;
+    line-height: 1.6;
+    counter-increment: item;
+}
+
+.markdown-content ol li::before {
+    content: counter(item) '.';
+    color: #4299e1;
+    font-weight: bold;
+    position: absolute;
+    left: -20px;
+    top: 0;
+}
+
+/* 嵌套列表 */
+.markdown-content ul ul,
+.markdown-content ol ol,
+.markdown-content ul ol,
+.markdown-content ol ul {
+    margin: 5px 0;
+    padding-left: 20px;
+}
+
+.markdown-content ul ul li::before {
+    content: '○';
+    color: #63b3ed;
+}
+
+.markdown-content ul ul ul li::before {
+    content: '▪';
+    color: #90cdf4;
+}
+
+/* 引用區塊 */
+.markdown-content blockquote {
+    border-left: 4px solid #4299e1;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    color: #2d3748;
+    box-shadow: 0 2px 4px rgba(66, 153, 225, 0.1);
+}
+
+.markdown-content blockquote p {
+    margin: 0;
+}
+
+/* 代碼區塊 */
+.markdown-content pre {
+    background: #2d3748;
+    color: #e2e8f0;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 20px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.markdown-content pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: 0.9rem;
+}
+
+/* 表格 */
+.markdown-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.markdown-content th,
+.markdown-content td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.markdown-content th {
+    background: linear-gradient(135deg, #4299e1 0%, #63b3ed 100%);
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+}
+
+.markdown-content tr:hover {
+    background: #f7fafc;
+}
+
+/* 分隔線 */
+.markdown-content hr {
+    border: none;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #4299e1, transparent);
+    margin: 30px 0;
+}
+
+/* 特殊高亮區塊 */
+.markdown-content .highlight {
+    background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+    border-left: 4px solid #f56565;
+    padding: 15px 20px;
+    margin: 15px 0;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 2px 4px rgba(245, 101, 101, 0.1);
+}
+
+.markdown-content .info {
+    background: linear-gradient(135deg, #f0f9ff 0%, #dbeafe 100%);
+    border-left: 4px solid #3b82f6;
+    padding: 15px 20px;
+    margin: 15px 0;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.1);
+}
+
+.markdown-content .warning {
+    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+    border-left: 4px solid #f59e0b;
+    padding: 15px 20px;
+    margin: 15px 0;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 2px 4px rgba(245, 158, 11, 0.1);
+}
+
+.markdown-content .success {
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border-left: 4px solid #10b981;
+    padding: 15px 20px;
+    margin: 15px 0;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.1);
+}
+
+/* Emoji 增強 */
+.markdown-content p:has(strong)::first-line,
+.markdown-content li:has(strong) {
+    font-weight: 600;
+}
+
+/* 特殊表情符號段落 */
+.markdown-content p:first-child:has([emoji]) {
+    font-size: 1.1rem;
+    padding: 10px 15px;
+    background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+    border-radius: 8px;
+    border-left: 4px solid #4299e1;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .markdown-content {
+        padding: 15px;
+    }
+
+    .markdown-content h1 {
+        font-size: 1.8rem;
+    }
+
+    .markdown-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .markdown-content h3 {
+        font-size: 1.3rem;
+    }
+
+    .markdown-content ul,
+    .markdown-content ol {
+        padding-left: 20px;
+    }
+
+    .markdown-content table {
+        font-size: 0.9rem;
+    }
+
+    .markdown-content th,
+    .markdown-content td {
+        padding: 8px 10px;
+    }
+}
+
+/* 動畫效果 */
+@keyframes shimmer {
+    0% {
+        opacity: 0.7;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3 {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+/* 列印樣式 */
+@media print {
+    .markdown-content {
+        color: black;
+        background: white;
+    }
+
+    .markdown-content h1,
+    .markdown-content h2,
+    .markdown-content h3 {
+        color: black;
+        background: none;
+        border-color: black;
+    }
+
+    .markdown-content .highlight,
+    .markdown-content .info,
+    .markdown-content .warning,
+    .markdown-content .success {
+        background: #f5f5f5;
+        border-color: black;
+    }
+}
+
+/* 無障礙支援 */
+@media (prefers-reduced-motion: reduce) {
+
+    .markdown-content h1,
+    .markdown-content h2,
+    .markdown-content h3 {
+        animation: none;
+    }
+
+    .markdown-content h2::before {
+        animation: none;
+    }
+}
+
+/* 高對比模式 */
+@media (prefers-contrast: high) {
+    .markdown-content {
+        color: black;
+    }
+
+    .markdown-content h1,
+    .markdown-content h2,
+    .markdown-content h3 {
+        color: black;
+        border-color: black;
+    }
+
+    .markdown-content strong {
+        color: black;
+        text-decoration: underline;
+    }
+}
+
+/* 圖片樣式 */
+.markdown-content img {
+    max-width: 100%;
+    height: auto;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 2px 4px;
+    border-radius: 4px;
+}
+
+/* Badge 樣式 - 針對 shields.io 等徽章 */
+.markdown-content img[src*="shields.io"],
+.markdown-content img[src*="badge"] {
+    display: inline-block;
+    margin: 2px 3px;
+    vertical-align: middle;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Badge 容器 - 如果多個 badge 在同一段落 */
+.markdown-content p:has(img[src*="shields.io"]),
+.markdown-content p:has(img[src*="badge"]) {
+    text-align: center;
+    margin: 15px 0;
+    line-height: 1.5;
+}
+
+/* 引用塊樣式增強 */
+.markdown-content blockquote {
+    background: #f8f9fa;
+    border-left: 4px solid #4299e1;
+    margin: 15px 0;
+    padding: 15px 20px;
+    font-style: italic;
+    color: #2d3748;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.markdown-content blockquote p {
+    margin: 0;
+    padding: 0;
+}
+
+/* 水平線樣式 */
+.markdown-content hr {
+    border: none;
+    border-top: 2px solid #e2e8f0;
+    margin: 30px 0;
+    border-radius: 1px;
+}

@@ -1,0 +1,236 @@
+<h1>🎯 黑白棋 AlphaZero AI 強化學習系統</h1>
+
+<blockquote>
+<p>一個完全使用 AI 協助開發的現代化黑白棋遊戲，結合深度學習與傳統算法，提供多層次的 AI 對戰體驗。</p>
+</blockquote>
+
+<p>
+  <img src="https://img.shields.io/badge/GitHub%20Pages-部署中-brightgreen" alt="GitHub Pages">
+  <img src="https://img.shields.io/badge/AI-Powered-blue" alt="AI Powered">
+  <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License">
+</p>
+
+<h2>📖 專案背景</h2>
+
+<p>這是一個人工智慧導論課程的期末專案，旨在<strong>全程使用 AI 進行開發</strong>，展示如何利用現代 AI 工具從設計、編碼、AI 訓練到部署的完整開發流程。</p>
+
+<h3>🔬 開發理念</h3>
+<ul>
+<li><strong>AI 驅動開發</strong>：使用 ChatGPT、GitHub Copilot 等 AI 工具協助整個開發過程</li>
+<li><strong>實戰應用</strong>：打造真正可用的線上遊戲，而非概念驗證</li>
+<li><strong>技術融合</strong>：結合傳統算法與深度學習，提供漸進式的 AI 難度體驗</li>
+<li><strong>教育價值</strong>：透過回放系統和策略提示，幫助玩家學習和提升</li>
+</ul>
+
+<h2>🎮 專案目標</h2>
+
+<h3>主要目標</h3>
+<ol>
+<li><strong>全程 AI 協助開發</strong>：展示 AI 工具在現代軟體開發中的應用</li>
+<li><strong>GitHub Pages 部署</strong>：打造真正能線上訪問的完整功能網站</li>
+<li><strong>多層次 AI 對戰</strong>：從簡單隨機到 AlphaZero 級別的 AI 對手</li>
+<li><strong>教育與娛樂並重</strong>：提供學習工具與遊戲樂趣</li>
+</ol>
+
+<h3>技術目標</h3>
+<ul>
+<li>實現完整的黑白棋遊戲邏輯</li>
+<li>開發多種 AI 算法（隨機、啟發式、極小極大、神經網絡）</li>
+<li>建立 AlphaZero 風格的自我對弈訓練系統</li>
+<li>實現模型轉換與瀏覽器端推理</li>
+<li>提供完整的用戶體驗（UI/UX、國際化、回放系統）</li>
+</ul>
+
+<h2>✅ 已完成內容</h2>
+
+<h3>🎯 核心遊戲功能</h3>
+<ul>
+<li>✅ <strong>完整黑白棋邏輯</strong>：8×8 棋盤、合法性檢查、棋子翻轉</li>
+<li>✅ <strong>三種遊戲模式</strong>：人人對戰、人機對戰、AI 對戰</li>
+<li>✅ <strong>悔棋系統</strong>：支援多步悔棋，提升遊戲體驗</li>
+<li>✅ <strong>遊戲狀態管理</strong>：完整的遊戲流程控制與狀態追蹤</li>
+</ul>
+
+<h3>🤖 AI 系統</h3>
+<ul>
+<li>✅ <strong>四級 AI 難度</strong>：
+  <ul>
+    <li>🟢 <strong>簡單</strong>：隨機策略（適合新手）</li>
+    <li>🟡 <strong>普通</strong>：位置權重評估系統</li>
+    <li>🔴 <strong>困難</strong>：極小極大算法 + Alpha-Beta 剪枝（4層深度）</li>
+    <li>🟠 <strong>超難</strong>：深度學習神經網絡（AlphaZero 架構，初步訓練版本）</li>
+  </ul>
+</li>
+<li>✅ <strong>AI 訓練系統</strong>：Google Colab 上的自我對弈訓練</li>
+<li>✅ <strong>模型轉換</strong>：自製 JavaScript 神經網絡實現，支援瀏覽器端推理</li>
+<li>✅ <strong>智能回退</strong>：神經網絡失效時自動切換到傳統算法</li>
+</ul>
+
+<h3>🎨 用戶界面與體驗</h3>
+<ul>
+<li>✅ <strong>現代化 UI</strong>：響應式設計、流暢動畫、直觀操作</li>
+<li>✅ <strong>視覺提示系統</strong>：有效位置高亮、移動預覽</li>
+<li>✅ <strong>主題系統</strong>：多種視覺風格、暗色模式支援</li>
+<li>✅ <strong>音效系統</strong>：完整的遊戲音效與設定選項</li>
+<li>✅ <strong>國際化支援</strong>：完整的多語言文本管理系統</li>
+</ul>
+
+<h3>📊 進階功能</h3>
+<ul>
+<li>✅ <strong>棋譜回放系統</strong>：完整的遊戲記錄與逐步回放</li>
+<li>✅ <strong>學習輔助</strong>：回放中的彩色提示點，幫助理解策略</li>
+<li>✅ <strong>遊戲統計</strong>：詳細的遊戲結果分析</li>
+<li>✅ <strong>規則說明</strong>：完整的遊戲規則與策略指南</li>
+</ul>
+
+<h3>🛠️ 技術實現</h3>
+<ul>
+<li>✅ <strong>模組化架構</strong>：清晰的代碼結構，易於維護和擴展</li>
+<li>✅ <strong>錯誤處理</strong>：完善的異常處理與用戶反饋</li>
+<li>✅ <strong>性能優化</strong>：高效的算法實現與資源管理</li>
+<li>✅ <strong>跨瀏覽器相容</strong>：支援主流瀏覽器</li>
+<li>✅ <strong>GitHub Pages 部署</strong>：自動化部署流程</li>
+</ul>
+
+<h2>🚧 未完成內容</h2>
+
+<h3>🔮 計劃中的功能</h3>
+<ul>
+<li>⏳ <strong>線上對戰系統</strong>：WebSocket 實時對戰功能</li>
+<li>⏳ <strong>排行榜系統</strong>：玩家評級與競技系統</li>
+<li>⏳ <strong>棋局分析</strong>：深度的棋局評估與建議系統</li>
+<li>⏳ <strong>社交功能</strong>：分享棋局、觀戰模式</li>
+</ul>
+
+<h3>🧠 AI 系統優化</h3>
+<ul>
+<li>⏳ <strong>超難 AI 深度訓練</strong>：目前的神經網絡僅訓練 1-2 小時，需要更長時間的自我對弈訓練以達到真正的 AlphaZero 水準</li>
+<li>⏳ <strong>AI 訓練介面</strong>：瀏覽器端的模型訓練工具</li>
+<li>⏳ <strong>訓練監控系統</strong>：實時監控訓練進度與模型性能</li>
+</ul>
+
+<h3>🎯 技術優化</h3>
+<ul>
+<li>⏳ <strong>模型壓縮</strong>：更小的神經網絡模型，提升載入速度</li>
+<li>⏳ <strong>WebAssembly 加速</strong>：關鍵算法的 WASM 優化</li>
+<li>⏳ <strong>服務端 AI</strong>：雲端 AI 服務，提供更強的對手</li>
+<li>⏳ <strong>數據分析</strong>：用戶行為分析與遊戲平衡調整</li>
+</ul>
+
+<h2>🏗️ 專案架構</h2>
+
+<pre><code>reversi/
+├── index.html              # 主頁面
+├── css/                    # 樣式文件
+│   ├── style.css          # 主要樣式
+│   ├── animations.css     # 動畫效果
+│   ├── markdown.css       # Markdown 渲染
+│   └── ...
+├── js/                     # JavaScript 模組
+│   ├── game.js            # 遊戲核心邏輯
+│   ├── ai.js              # AI 算法實現
+│   ├── ui.js              # 用戶界面控制
+│   ├── board.js           # 棋盤管理
+│   ├── replay.js          # 回放系統
+│   ├── modal.js           # 模態框管理
+│   └── textManager.js     # 國際化文本管理
+├── assets/                 # 資源文件
+│   ├── description.json   # 文本資源
+│   ├── rule.md           # 遊戲規則
+│   ├── ai_train/         # AI 訓練 Notebook
+│   └── ai_train_result/  # 訓練結果模型
+└── docs/                   # 說明文件
+    ├── changelog.md       # 變更日誌
+    └── goal.md           # 專案目標
+</code></pre>
+
+<h2>🚀 技術特色</h2>
+
+<h3>🧠 AI 算法創新</h3>
+<ul>
+<li><strong>漸進式難度設計</strong>：從隨機到神經網絡的完整難度曲線</li>
+<li><strong>混合式架構</strong>：傳統算法與深度學習的有機結合</li>
+<li><strong>實時推理</strong>：瀏覽器端神經網絡推理，無需服務器（自製 JavaScript 實現）</li>
+<li><strong>初步深度學習</strong>：實現了 AlphaZero 架構的神經網絡，雖然訓練時間有限（1-2小時），但展示了完整的深度學習流程</li>
+</ul>
+
+<h3>🎨 用戶體驗設計</h3>
+<ul>
+<li><strong>零學習成本</strong>：直觀的操作界面，新手友好</li>
+<li><strong>漸進式引導</strong>：從簡單 AI 開始，逐步提升挑戰</li>
+<li><strong>即時反饋</strong>：豐富的視覺提示與動畫效果</li>
+</ul>
+
+<h3>🔧 工程實踐</h3>
+<ul>
+<li><strong>AI 輔助開發</strong>：展示現代 AI 工具在開發中的實際應用</li>
+<li><strong>代碼品質</strong>：模組化設計、完善測試、詳細註釋</li>
+<li><strong>部署自動化</strong>：GitHub Pages 自動部署流程</li>
+</ul>
+
+<h2>🛠️ 開發工具與技術棧</h2>
+
+<h3>前端技術</h3>
+<ul>
+<li><strong>HTML5/CSS3/JavaScript</strong>：現代 Web 標準</li>
+<li><strong>Font Awesome</strong>：圖標庫</li>
+<li><strong>CSS Grid/Flexbox</strong>：響應式佈局</li>
+<li><strong>Web APIs</strong>：本地存儲、音頻播放等</li>
+</ul>
+
+<h3>AI 與機器學習</h3>
+<ul>
+<li><strong>自製神經網絡</strong>：瀏覽器端深度學習實現</li>
+<li><strong>Google Colab</strong>：雲端 AI 訓練環境</li>
+<li><strong>Python/NumPy</strong>：AI 模型開發與訓練</li>
+</ul>
+
+<h3>開發工具</h3>
+<ul>
+<li><strong>GitHub Copilot</strong>：AI 代碼助手</li>
+<li><strong>ChatGPT</strong>：設計與問題解決</li>
+<li><strong>VS Code</strong>：主要開發環境</li>
+<li><strong>GitHub Pages</strong>：靜態網站部署</li>
+</ul>
+
+<h2>📚 使用說明</h2>
+
+<h3>🎮 快速開始</h3>
+<ol>
+<li>訪問遊戲網站</li>
+<li>選擇遊戲模式（推薦新手從「挑戰 AI - 簡單」開始）</li>
+<li>點擊棋盤上的高亮位置下棋</li>
+<li>享受與 AI 的對弈樂趣！</li>
+</ol>
+
+<h3>🎯 進階技巧</h3>
+<ul>
+<li>觀看「AI 對戰」模式學習高級策略</li>
+<li>使用棋譜回放功能分析對局</li>
+<li>查看遊戲規則了解詳細策略建議</li>
+<li>從簡單 AI 開始，逐步挑戰更高難度</li>
+<li><strong>超難 AI 說明</strong>：目前的神經網絡 AI 由於訓練時間限制，可能不如困難級別的傳統算法強，但展示了深度學習的完整實現</li>
+</ul>
+
+<h2>🤝 開發心得</h2>
+
+<p>這個專案展示了 AI 工具在現代軟體開發中的巨大潛力：</p>
+
+<ul>
+<li><strong>設計階段</strong>：AI 協助構思功能特色與用戶體驗</li>
+<li><strong>編碼階段</strong>：GitHub Copilot 提供智能代碼補全</li>
+<li><strong>問題解決</strong>：ChatGPT 幫助快速定位和解決技術難題</li>
+<li><strong>優化階段</strong>：AI 建議效能改進與代碼重構</li>
+</ul>
+
+<p>最重要的是，AI 不是取代開發者，而是成為強大的協作夥伴，讓我們能夠專注於創意和架構設計，而將重複性工作交給 AI 處理。</p>
+
+<h2>📄 授權</h2>
+
+<p>本專案採用 MIT 授權條款</p>
+
+<hr>
+
+<p><strong>🎯 讓 AI 協助我們創造更好的軟體！</strong></p>
+
+<p><em>這個專案是 AI 驅動開發的最佳實踐範例，展示了人工智慧如何成為軟體開發者的強大夥伴。</em></p>

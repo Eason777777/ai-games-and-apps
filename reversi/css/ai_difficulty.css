@@ -1,0 +1,59 @@
+/* AI vs AI 難度設定區域樣式 */
+#ai-vs-ai-difficulty {
+    padding: 15px 0;
+}
+
+/* 雙AI模式的特殊樣式 */
+.dual-ai-mode {
+    background-color: rgba(240, 240, 245, 0.85);
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.ai-side {
+    margin-bottom: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: rgba(248, 249, 250, 0.7);
+}
+
+.ai-side h3 {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    color: #333;
+    display: flex;
+    align-items: center;
+}
+
+.ai-side h3 i {
+    margin-right: 8px;
+}
+
+.ai-side:first-child h3 i {
+    color: #000;
+}
+
+.ai-side:last-of-type h3 i {
+    color: #fff;
+    text-shadow: 0 0 2px #000;
+}
+
+.confirm-container {
+    text-align: center;
+    margin-top: 15px;
+}
+
+/* 黑白子AI按鈕樣式 */
+.black-ai-btn.active {
+    background-color: #333;
+    color: white;
+}
+
+.white-ai-btn.active {
+    background-color: #f8f8f8;
+    color: #333;
+    border: 2px solid #333;
+}

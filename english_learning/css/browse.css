@@ -1,0 +1,262 @@
+/* Browse Words Mode Styles */
+
+/* Words Grid Layout */
+.words-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+}
+
+/* 確保瀏覽模式的樣式優先級 */
+#browse .words-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+}
+
+/* Browse Word Cards */
+.browse-word-card {
+    background: white !important;
+    border-radius: 10px;
+    padding: 20px;
+    border: 2px solid #e2e8f0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    display: block;
+    min-height: 150px;
+}
+
+/* 確保瀏覽模式卡片樣式優先級 */
+#browse .browse-word-card {
+    background: white !important;
+    border-radius: 10px;
+    padding: 20px;
+    border: 2px solid #e2e8f0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    display: block;
+    min-height: 150px;
+}
+
+.browse-word-card:hover,
+#browse .browse-word-card:hover {
+    border-color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+}
+
+.browse-word-card h3,
+#browse .browse-word-card h3 {
+    color: #4a5568 !important;
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.browse-word-card .definition,
+#browse .browse-word-card .definition {
+    color: #718096 !important;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    display: block;
+}
+
+.browse-word-card .chinese,
+#browse .browse-word-card .chinese {
+    color: #667eea !important;
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: block;
+}
+
+.browse-word-card .unit,
+#browse .browse-word-card .unit {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #667eea;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* Word Status and Badges */
+.word-status {
+    margin-top: 10px;
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.status-badge {
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: 500;
+    color: white;
+}
+
+.status-badge.learned {
+    background: #38a169;
+}
+
+.status-badge.difficulty-easy {
+    background: #38a169;
+}
+
+.status-badge.difficulty-hard {
+    background: #e53e3e;
+}
+
+.browse-word-card .definition {
+    color: #718096;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.browse-word-card .chinese {
+    color: #667eea;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.browse-word-card .unit {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #667eea;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* Word Status and Badges */
+.word-status {
+    margin-top: 10px;
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.status-badge {
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: 500;
+    color: white;
+}
+
+.status-badge.learned {
+    background: #38a169;
+}
+
+.status-badge.difficulty-easy {
+    background: #38a169;
+}
+
+.status-badge.difficulty-hard {
+    background: #e53e3e;
+}
+
+/* Empty State for Browse Mode */
+.browse-empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #718096;
+    grid-column: 1 / -1;
+}
+
+.browse-empty-state h3 {
+    color: #4a5568;
+    margin-bottom: 10px;
+}
+
+.browse-empty-state p {
+    margin-bottom: 20px;
+}
+
+/* Browse Page Controls */
+#browse .controls {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px 20px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#browse .controls select,
+#browse .controls input[type="search"] {
+    padding: 10px 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: white;
+    transition: border-color 0.3s ease;
+    flex: 1;
+}
+
+#browse .controls select:focus,
+#browse .controls input[type="search"]:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+#browse .controls button {
+    white-space: nowrap;
+}
+
+/* Responsive Design for Browse Mode */
+@media (max-width: 768px) {
+    .browse-word-card {
+        padding: 15px;
+    }
+
+    .browse-word-card h3 {
+        font-size: 1.1rem;
+    }
+
+    .browse-word-card .definition {
+        font-size: 0.9rem;
+    }
+
+    .browse-word-card .chinese {
+        font-size: 1rem;
+    }
+
+    .browse-word-card .unit {
+        font-size: 0.7rem;
+        padding: 3px 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .browse-word-card {
+        padding: 12px;
+    }
+
+    .word-status {
+        margin-top: 8px;
+        gap: 3px;
+    }
+
+    .status-badge {
+        font-size: 0.7rem;
+        padding: 1px 6px;
+    }
+}

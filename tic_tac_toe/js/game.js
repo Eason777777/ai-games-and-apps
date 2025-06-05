@@ -1,0 +1,257 @@
+class Game {
+    constructor() {
+        this.board = new Board();
+        this.ai = new AI();
+        this.ui = new UI();
+        this.audio = new AudioManager();
+        this.storage = new GameStorage();
+
+        this.gameMode = 'human'; // 'human' 或 'ai'
+        this.currentPlayer = 'X'; // X 總是先手
+        this.gameActive = false;
+        this.gameHistory = [];
+        this.aiDifficulty = 'medium';
+
+        this.init();
+    }
+
+    init() {
+        this.setupEventListeners();
+        this.loadSettings();
+        this.ui.showMainMenu();
+    } setupEventListeners() {
+        // 注意：UI 類別已經處理了所有事件綁定
+        // 這裡只需要設置一些 Game 類別特定的事件監聽器
+
+        // 遊戲結束時的處理
+        document.addEventListener('gameEnd', (e) => {
+            this.handleGameEnd(e.detail);
+        });
+
+        // 遊戲重置時的處理
+        document.addEventListener('gameReset', () => {
+            this.resetGame();
+        });
+    } startGame(mode) {
+        this.gameMode = mode;
+        this.gameActive = true;
+        this.currentPlayer = 'X';
+        this.gameHistory = [];
+        this.board.reset();
+        this.ui.updateBoard(this.board);
+        this.ui.updateGameStatus(`玩家 ${this.currentPlayer} 的回合`);
+
+        // 播放遊戲開始音效
+        this.audio.playNewGame();
+    } handleCellClick(index) {
+        if (!this.gameActive) return;
+        if (!this.board.makeMove(index, this.currentPlayer)) {
+            this.audio.playError();
+            return;
+        }// 記錄移動歷史
+        this.gameHistory.push({
+            index: index,
+            player: this.currentPlayer,
+            boardState: [...this.board.grid]
+        });
+
+        this.audio.playPlace();
+        this.ui.updateBoard(this.board);
+        this.ui.setAnimating(true);
+
+        // 添加放置動畫
+        setTimeout(() => {
+            this.ui.setAnimating(false);
+        }, 300);
+
+        // 檢查遊戲結束
+        const winner = this.board.checkWinner();
+        if (winner) {
+            this.endGame(winner);
+            return;
+        }
+
+        if (this.board.isFull()) {
+            this.endGame('tie');
+            return;
+        }        // 切換玩家
+        this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
+        this.ui.updateGameStatus(`玩家 ${this.currentPlayer} 的回合`);
+
+        // AI 回合
+        if (this.gameMode === 'ai' && this.currentPlayer === 'O') {
+            this.makeAIMove();
+        }
+    } async makeAIMove() {
+        this.ui.updateGameStatus('AI 思考中...');
+        this.ui.showAIThinking();
+
+        // 添加延遲讓玩家看到 AI 在思考
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        const move = this.ai.makeMove(this.board, this.currentPlayer);
+
+        if (move !== null && move !== undefined) {
+            this.board.makeMove(move, this.currentPlayer);
+
+            // 記錄移動歷史
+            this.gameHistory.push({
+                index: move,
+                player: this.currentPlayer,
+                boardState: [...this.board.grid]
+            });
+
+            this.audio.playPlace();
+            this.ui.updateBoard(this.board);
+            this.ui.hideAIThinking();
+
+            // 檢查遊戲結束
+            const winner = this.board.checkWinner();
+            if (winner) {
+                this.endGame(winner);
+                return;
+            }
+
+            if (this.board.isFull()) {
+                this.endGame('tie');
+                return;
+            }
+
+            // 切換回玩家
+            this.currentPlayer = 'X';
+            this.ui.updateGameStatus(`玩家 ${this.currentPlayer} 的回合`);
+        }
+    }
+
+    endGame(result) {
+        this.gameActive = false;
+
+        let message = '';
+        let isWin = false;
+
+        if (result === 'tie') {
+            message = '平局！';
+            this.audio.playDraw();
+        } else if (result === 'X') {
+            if (this.gameMode === 'human') {
+                message = '玩家 X 獲勝！';
+            } else {
+                message = '你贏了！';
+                isWin = true;
+            }
+            this.audio.playWin();
+        } else if (result === 'O') {
+            if (this.gameMode === 'human') {
+                message = '玩家 O 獲勝！';
+            } else {
+                message = 'AI 獲勝！';
+            }
+            this.audio.playWin();  // 使用 playWin 音效
+        } this.ui.updateGameStatus(message);
+        this.ui.showGameEndDialog(message, message);
+
+        // 標記獲勝線
+        const winLine = this.board.getWinningLine();
+        if (winLine) {
+            this.ui.highlightWinningLine(winLine);
+        }
+
+        // 儲存遊戲結果
+        this.storage.updateStats(result, this.aiDifficulty, this.gameHistory.length);
+    }
+
+    restartGame() {
+        this.startGame(this.gameMode);
+    } returnToMenu() {
+        this.gameActive = false;
+        // 顯示主選單的邏輯（重新顯示模式選擇）
+        document.querySelector('.mode-selection').style.display = 'block';
+        document.querySelector('.ai-difficulty').style.display = 'none';
+        document.querySelector('.player-symbol-selection').style.display = 'none';
+    }
+
+    undoMove() {
+        if (this.gameHistory.length === 0 || !this.gameActive) return;
+
+        // 在 AI 模式下，需要撤銷兩步（玩家和 AI）
+        const movesToUndo = this.gameMode === 'ai' && this.gameHistory.length >= 2 ? 2 : 1;
+
+        for (let i = 0; i < movesToUndo && this.gameHistory.length > 0; i++) {
+            this.gameHistory.pop();
+        }
+
+        // 恢復棋盤狀態
+        if (this.gameHistory.length > 0) {
+            const lastMove = this.gameHistory[this.gameHistory.length - 1];
+            this.board.setBoard(lastMove.boardState);
+            this.currentPlayer = lastMove.player === 'X' ? 'O' : 'X';
+        } else {
+            this.board.reset();
+            this.currentPlayer = 'X';
+        } this.ui.updateBoard(this.board); this.ui.updateGameStatus(`玩家 ${this.currentPlayer} 的回合`);
+        this.audio.playClick();  // 使用 playClick 音效
+    }
+
+    toggleSound() {
+        const soundEnabled = this.audio.toggle();  // 使用 toggle 方法
+        this.ui.updateSoundButton(soundEnabled);
+        this.storage.updateSetting('soundEnabled', soundEnabled);
+    } loadSettings() {
+        const settings = this.storage.loadSettings();
+        this.audio.setEnabled(settings.soundEnabled);  // 使用 setEnabled 方法
+        this.ui.updateSoundButton(settings.soundEnabled);
+    }// 獲取遊戲統計數據
+    getGameStats() {
+        return this.storage.loadStats();
+    }
+
+    // 重置遊戲統計
+    resetStats() {
+        return this.storage.resetStats();
+    }
+
+    // 設置玩家符號
+    setPlayerSymbol(symbol) {
+        this.playerSymbol = symbol;
+    }    // 設置 AI 難度
+    setAIDifficulty(difficulty, player = null) {
+        if (player) {
+            // AI vs AI 模式
+            if (player === 'X') {
+                this.aiDifficultyX = difficulty;
+            } else {
+                this.aiDifficultyO = difficulty;
+            }
+        } else {
+            // 人類 vs AI 模式
+            this.aiDifficulty = difficulty;
+            this.ai.setDifficulty(difficulty);
+        }
+    }
+
+    // 重新開始遊戲
+    restartGame() {
+        this.board.reset();
+        this.gameActive = true;
+        this.currentPlayer = 'X';
+        this.gameHistory = [];
+
+        this.ui.updateBoard(this.board);
+        this.ui.updateGameStatus(`玩家 ${this.currentPlayer} 的回合`);
+        this.ui.showGameBoard();
+
+        // 如果是 AI vs AI 模式，開始 AI 對戰
+        if (this.gameMode === 'ai-vs-ai') {
+            setTimeout(() => this.makeAIMove(), 500);
+        }
+    }
+
+    // 重置遊戲（回到主選單）
+    resetGame() {
+        this.gameActive = false;
+        this.board.reset();
+        this.currentPlayer = 'X';
+        this.gameHistory = [];
+        this.ui.showMainMenu();
+    }
+}

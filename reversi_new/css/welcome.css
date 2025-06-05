@@ -1,0 +1,223 @@
+/* 歡迎區域與新UI元件專用樣式 */
+
+.welcome-section {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 30px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.welcome-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.welcome-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin-bottom: 18px;
+}
+
+.welcome-description {
+    font-size: 1rem;
+    opacity: 0.85;
+    line-height: 1.6;
+    max-width: 800px;
+    /* 調整寬度接近紫色框框寬度 */
+    margin: 0 auto;
+    word-break: keep-all;
+    /* 避免中文字詞被拆開 */
+}
+
+.mode-cards-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.mode-card {
+    background: #fff;
+    border-radius: 15px;
+    padding: 22px 18px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    border: 2px solid transparent;
+    min-width: 180px;
+    max-width: 220px;
+    flex: 1 1 180px;
+    transition: all 0.3s cubic-bezier(.4, 0, .2, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #222;
+    /* 確保卡片內文字為深色 */
+}
+
+.mode-card:hover,
+.mode-card.active {
+    border-color: #667eea;
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+}
+
+.mode-icon {
+    font-size: 2.2rem;
+    color: #667eea;
+    margin-bottom: 10px;
+}
+
+.mode-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.mode-description {
+    font-size: 0.92rem;
+    color: #666;
+    text-align: center;
+}
+
+.mode-recommend {
+    display: inline-block;
+    background: linear-gradient(90deg, #ffb347, #ffcc33);
+    color: #333;
+    font-size: 0.85rem;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 2px 10px;
+    margin-top: 6px;
+    margin-bottom: 2px;
+}
+
+/* Modal 樣式 */
+.modal-setting {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-setting.show {
+    display: flex;
+}
+
+.modal-setting-content {
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px 28px 24px 28px;
+    min-width: 320px;
+    max-width: 95vw;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+    text-align: center;
+    position: relative;
+}
+
+.modal-setting-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 18px;
+}
+
+.modal-setting-close {
+    position: absolute;
+    right: 18px;
+    top: 12px;
+    font-size: 1.5rem;
+    color: #888;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.modal-setting-group {
+    margin-bottom: 18px;
+}
+
+.modal-setting-label {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.modal-setting-options {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.modal-setting-option {
+    background: #f5f6fa;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #333;
+    /* 確保預設文字為深色 */
+}
+
+.modal-setting-option.active,
+.modal-setting-option:focus {
+    border-color: #667eea;
+    background: #e6eaff;
+    color: #333;
+}
+
+.modal-setting-action {
+    margin-top: 18px;
+}
+
+.modal-setting-action button {
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 32px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.modal-setting-action button:hover {
+    background: linear-gradient(90deg, #5a6edc, #6d4ba2);
+}
+
+@media (max-width: 600px) {
+    .welcome-title {
+        font-size: 1.5rem;
+    }
+
+    .modal-setting-content {
+        min-width: 90vw;
+        padding: 18px 6vw;
+    }
+
+    .mode-cards-container {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .mode-card {
+        min-width: 0;
+        max-width: 100%;
+    }
+}
