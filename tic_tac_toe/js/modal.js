@@ -10,7 +10,7 @@ class GameSettingModal {
         this.selectedOAiLevel = 'medium'; // 預設 O AI 難度
         this.selectedPlayerSymbol = 'X'; // 預設玩家符號
         this.onConfirm = null;
-    }    init() {
+    } init() {
         this.modal = document.getElementById('modal-setting');
         if (!this.modal) {
             console.error('Modal setting element not found');
@@ -24,10 +24,25 @@ class GameSettingModal {
             closeBtn.title = '關閉'; // 默認標題
         }
 
-        // 標題設置
+        // 標題設置 - 無條件確保標題顯示
         const titleElement = this.modal.querySelector('.modal-setting-title');
-        if (titleElement && titleElement.textContent.trim() === '') {
-            titleElement.textContent = '新遊戲設定'; // 默認標題
+        if (titleElement) {
+            // 無條件設置標題，確保顯示
+            titleElement.textContent = '新遊戲設定';
+            titleElement.style.display = 'block';
+            console.log("模態框標題已設置:", titleElement.textContent);
+        } else {
+            console.error("找不到模態框標題元素");
+        }
+
+        // 檢查模式標籤
+        const modeLabel = this.modal.querySelector('.modal-setting-group.mode .modal-setting-label');
+        if (modeLabel) {
+            modeLabel.textContent = '選擇模式';
+            modeLabel.style.display = 'block';
+            console.log("模式標籤已設置:", modeLabel.textContent);
+        } else {
+            console.error("找不到模式標籤元素");
         }
 
         // 確認按鈕
@@ -41,15 +56,25 @@ class GameSettingModal {
 
         // 設定事件監聽器
         this.setupEventListeners();
-    }
-
-    show(defaults = {}, onConfirm = null) {
+    } show(defaults = {}, onConfirm = null) {
         this.onConfirm = onConfirm;
         this.modal.style.display = 'flex';
         this.modal.classList.add('show');
 
-        // 預設選擇
-        if (defaults.mode) this.selectMode(defaults.mode);
+        // 預設選擇，確保顯示預設值
+        if (defaults.mode) {
+            this.selectMode(defaults.mode);
+        }
+
+        // 顯示預設 AI 難度
+        this.selectAI(this.selectedAiLevel); // 顯示預設 medium 難度
+        this.selectXAI(this.selectedXAiLevel); // 顯示預設 X AI medium 難度
+        this.selectOAI(this.selectedOAiLevel); // 顯示預設 O AI medium 難度
+
+        // 顯示預設玩家符號
+        this.selectSymbol(this.selectedPlayerSymbol); // 顯示預設 X 符號
+
+        // 如果有傳入參數，則覆蓋預設值
         if (defaults.aiLevel) this.selectAI(defaults.aiLevel);
         if (defaults.playerSymbol) this.selectSymbol(defaults.playerSymbol);
     }
@@ -194,22 +219,27 @@ class GameSettingModal {
                 btn.classList.add('active');
             }
         });
-    }    updateModalContent() {
-        // 更新模態框中的所有文字
-        if (!window.textManager) return;
+    } updateModalContent() {
+        // 如果沒有文字管理器，我們也要直接設置默認文字
+        const textManager = window.textManager || {
+            getText: (key, defaultText) => defaultText
+        };
 
-        // 標題
+        // 標題 - 確保存在且設置
         const titleElement = this.modal.querySelector('.modal-setting-title');
         if (titleElement) {
-            titleElement.textContent = window.textManager.getText('modal.newGameSettings', '新遊戲設定');
+            titleElement.textContent = textManager.getText('modal.newGameSettings', '新遊戲設定');
+            console.log("設置模態框標題:", titleElement.textContent);
+        } else {
+            console.warn("找不到模態框標題元素");
         }
-        
+
         // 關閉按鈕標題
         const closeBtn = this.modal.querySelector('.modal-setting-close');
         if (closeBtn) {
-            closeBtn.title = window.textManager.getText('modal.close', '關閉');
+            closeBtn.title = textManager.getText('modal.close', '關閉');
         }
-        
+
         // 確認按鈕
         const confirmBtn = document.getElementById('modal-setting-confirm');
         if (confirmBtn) {

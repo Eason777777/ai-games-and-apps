@@ -45,6 +45,7 @@
     justify-content: center;
     align-items: center;
     z-index: 2000;
+    -webkit-backdrop-filter: blur(3px);
     backdrop-filter: blur(3px);
 }
 
@@ -425,8 +426,11 @@
     align-items: center;
     gap: clamp(6px, 2vw, 16px);
     margin-bottom: 16px;
+    /* Firefox */
     scrollbar-width: thin;
     scrollbar-color: #b3c6e0 #f5f7fa;
+    /* Safari 備用方案：隱藏預設滾動條 */
+    overflow-x: auto;
 }
 
 .control-btn {
@@ -462,19 +466,22 @@
 .control-buttons::-webkit-scrollbar {
     height: 8px;
 }
+
 .control-buttons::-webkit-scrollbar-thumb {
     background: #b3c6e0;
     border-radius: 4px;
 }
+
 .control-buttons::-webkit-scrollbar-track {
     background: #f5f7fa;
 }
 
 @media (max-width: 600px) {
-  .control-buttons {
-    gap: 6px;
-  }
+    .control-buttons {
+        gap: 6px;
+    }
 }
+
 @media (max-width: 900px) {
     .replay-content {
         width: 98%;

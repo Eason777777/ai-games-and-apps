@@ -206,6 +206,7 @@ body {
 .floating-icons {
     position: relative;
     height: 400px;
+    width: 100%;
 }
 
 .icon-item {
@@ -222,30 +223,7 @@ body {
     animation: float 6s ease-in-out infinite;
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.icon-item:nth-child(1) {
-    top: 20%;
-    left: 10%;
-    animation-delay: 0s;
-}
-
-.icon-item:nth-child(2) {
-    top: 60%;
-    left: 60%;
-    animation-delay: 1.5s;
-}
-
-.icon-item:nth-child(3) {
-    top: 10%;
-    right: 20%;
-    animation-delay: 3s;
-}
-
-.icon-item:nth-child(4) {
-    bottom: 20%;
-    left: 30%;
-    animation-delay: 4.5s;
+    /* 移除固定位置，由 JavaScript 動態設置 */
 }
 
 @keyframes float {

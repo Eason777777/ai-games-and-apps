@@ -26,24 +26,29 @@
             </div>
         </div> <!-- 模式卡片區 -->
         <div class="mode-cards-container">
-            <div class="mode-card" id="card-human-vs-human" data-mode="human-vs-human">
+            <div class="mode-card" id="card-human-vs-human" data-mode="human-vs-human" role="button" tabindex="0"
+                aria-label="選擇人類對戰人類模式">
                 <div class="mode-icon"><i class="fas fa-users"></i></div>
                 <div class="mode-title"></div>
                 <div class="mode-description"></div>
             </div>
-            <div class="mode-card" id="card-human-vs-ai" data-mode="human-vs-ai">
+            <div class="mode-card" id="card-human-vs-ai" data-mode="human-vs-ai" role="button" tabindex="0"
+                aria-label="選擇人類對戰AI模式">
                 <div class="mode-icon"><i class="fas fa-robot"></i></div>
                 <div class="mode-title"> <span class="mode-recommend"></span></div>
                 <div class="mode-description"></div>
             </div>
-            <div class="mode-card" id="card-ai-vs-ai" data-mode="ai-vs-ai">
+            <div class="mode-card" id="card-ai-vs-ai" data-mode="ai-vs-ai" role="button" tabindex="0"
+                aria-label="選擇AI對戰AI模式">
                 <div class="mode-icon"><i class="fas fa-microchip"></i></div>
                 <div class="mode-title"></div>
                 <div class="mode-description"></div>
             </div>
-        </div>        <div style="text-align:center;margin-bottom:18px;">
-            <button id="view-rules" class="quick-start-btn"><i class="fas fa-book"></i> </button>
-            <button id="view-about" class="quick-start-btn"><i class="fas fa-info-circle"></i> 關於本專案</button>
+        </div>
+        <div style="text-align:center;margin-bottom:18px;">
+            <button id="view-rules" class="quick-start-btn" aria-label="查看遊戲規則"><i class="fas fa-book"></i> </button>
+            <button id="view-about" class="quick-start-btn" aria-label="關於本專案"><i class="fas fa-info-circle"></i>
+                關於本專案</button>
         </div><!-- 遊戲資訊顯示 -->
         <div class="game-info">
             <div class="player-info">
@@ -68,8 +73,8 @@
         </div>
         <div class="controls">
             <div class="game-controls">
-                <button id="new-game"><i class="fas fa-redo-alt"></i> </button>
-                <button id="undo" disabled><i class="fas fa-undo"></i> </button>
+                <button id="new-game" aria-label="開始新遊戲"><i class="fas fa-redo-alt"></i> </button>
+                <button id="undo" disabled aria-label="悔棋"><i class="fas fa-undo"></i> </button>
             </div>
         </div>
         <footer class="footer">
@@ -78,47 +83,50 @@
     </div> <!-- 新遊戲設定 Modal -->
     <div class="modal-setting" id="modal-setting">
         <div class="modal-setting-content">
-            <button class="modal-setting-close" title="">&times;</button>
+            <button class="modal-setting-close" title="關閉設定視窗" aria-label="關閉設定視窗">&times;</button>
             <div class="modal-setting-title"></div>
             <div class="modal-setting-group mode">
                 <span class="modal-setting-label"></span>
                 <div class="modal-setting-options">
-                    <button class="modal-setting-option mode" data-mode="human-vs-human"><i class="fas fa-users"></i>
+                    <button class="modal-setting-option mode" data-mode="human-vs-human" aria-label="人類對戰人類模式"><i
+                            class="fas fa-users"></i>
                     </button>
-                    <button class="modal-setting-option mode" data-mode="human-vs-ai"><i class="fas fa-robot"></i>
+                    <button class="modal-setting-option mode" data-mode="human-vs-ai" aria-label="人類對戰AI模式"><i
+                            class="fas fa-robot"></i>
                     </button>
-                    <button class="modal-setting-option mode" data-mode="ai-vs-ai"><i class="fas fa-microchip"></i>
+                    <button class="modal-setting-option mode" data-mode="ai-vs-ai" aria-label="AI對戰AI模式"><i
+                            class="fas fa-microchip"></i>
                     </button>
                 </div>
             </div>
             <div class="modal-setting-group ai" style="display:none;">
                 <span class="modal-setting-label"></span>
                 <div class="modal-setting-options">
-                    <button class="modal-setting-option ai" data-level="easy"></button>
-                    <button class="modal-setting-option ai" data-level="medium"></button>
-                    <button class="modal-setting-option ai" data-level="hard"></button>
-                    <button class="modal-setting-option ai" data-level="super-hard"></button>
+                    <button class="modal-setting-option ai" data-level="easy" aria-label="簡單難度"></button>
+                    <button class="modal-setting-option ai" data-level="medium" aria-label="中等難度"></button>
+                    <button class="modal-setting-option ai" data-level="hard" aria-label="困難難度"></button>
+                    <button class="modal-setting-option ai" data-level="super-hard" aria-label="超困難難度"></button>
                 </div>
             </div>
             <div class="modal-setting-group color" style="display:none;">
                 <span class="modal-setting-label"></span>
                 <div class="modal-setting-options">
-                    <button class="modal-setting-option color" data-color="black"></button>
-                    <button class="modal-setting-option color" data-color="white"></button>
+                    <button class="modal-setting-option color" data-color="black" aria-label="選擇黑色棋子"></button>
+                    <button class="modal-setting-option color" data-color="white" aria-label="選擇白色棋子"></button>
                 </div>
             </div>
             <div class="modal-setting-action">
-                <button id="modal-setting-confirm"></button>
+                <button id="modal-setting-confirm" aria-label="確認設定並開始新遊戲"></button>
             </div>
         </div>
     </div> <!-- 基本通知Modal (用於簡單消息和跳過回合) -->
     <div class="modal" id="notification-modal">
         <div class="modal-content">
-            <span class="close-button" id="notification-close">&times;</span>
+            <span class="close-button" id="notification-close" aria-label="關閉通知" title="關閉通知">&times;</span>
             <h2 id="notification-title"></h2>
             <p id="notification-message"></p>
             <div id="notification-actions">
-                <button id="notification-confirm">確認</button>
+                <button id="notification-confirm" aria-label="確認通知訊息">確認</button>
             </div>
         </div>
     </div>
@@ -126,22 +134,23 @@
     <!-- 遊戲規則Modal -->
     <div class="modal" id="rules-modal">
         <div class="modal-content">
-            <span class="close-button" id="rules-close">&times;</span>
+            <span class="close-button" id="rules-close" aria-label="關閉遊戲規則" title="關閉遊戲規則">&times;</span>
             <h2 id="rules-title"></h2>
             <div id="rules-content"></div>
             <div id="rules-actions">
-                <button id="rules-confirm">知道了</button>
+                <button id="rules-confirm" aria-label="我已了解遊戲規則">知道了</button>
             </div>
-        </div>    </div>
+        </div>
+    </div>
 
     <!-- 關於本專案Modal -->
     <div class="modal" id="about-modal">
         <div class="modal-content">
-            <span class="close-button" id="about-close">&times;</span>
+            <span class="close-button" id="about-close" aria-label="關閉關於本專案" title="關閉關於本專案">&times;</span>
             <h2 id="about-title">關於本專案</h2>
             <div id="about-content" class="markdown-content"></div>
             <div id="about-actions">
-                <button id="about-confirm">知道了</button>
+                <button id="about-confirm" aria-label="我已了解本專案資訊">知道了</button>
             </div>
         </div>
     </div>
@@ -149,7 +158,7 @@
     <!-- 遊戲結束Modal (用於多按鈕的複雜操作) -->
     <div class="modal" id="game-end-modal">
         <div class="modal-content">
-            <span class="close-button" id="game-end-close">&times;</span>
+            <span class="close-button" id="game-end-close" aria-label="關閉遊戲結束訊息" title="關閉遊戲結束訊息">&times;</span>
             <h2 id="game-end-title"></h2>
             <div id="game-end-message"></div>
             <div id="game-end-actions">
@@ -160,11 +169,10 @@
 
     <!-- 回放模態框 -->
     <div id="replay-modal" class="modal replay-modal">
-        <div class="modal-content replay-content">
-            <!-- 標題列 -->
+        <div class="modal-content replay-content"> <!-- 標題列 -->
             <div class="replay-header">
                 <h2><i class="fas fa-play-circle"></i> 棋譜回放</h2>
-                <button class="close-btn">&times;</button>
+                <button class="close-btn" aria-label="關閉棋譜回放" title="關閉棋譜回放">&times;</button>
             </div>
             <!-- 回放區域 - 水平分割佈局 -->
             <div class="replay-body">
@@ -212,25 +220,25 @@
                     <div class="playback-controls-section">
                         <div class="controls-title">播放控制</div>
                         <div class="control-buttons">
-                            <button id="replay-start" class="control-btn" title="跳到開始">
+                            <button id="replay-start" class="control-btn" title="跳到開始" aria-label="跳到開始">
                                 <i class="fas fa-step-backward"></i>
                             </button>
-                            <button id="replay-prev" class="control-btn" title="上一步">
+                            <button id="replay-prev" class="control-btn" title="上一步" aria-label="上一步">
                                 <i class="fas fa-chevron-left"></i>
                             </button>
-                            <button id="replay-play" class="control-btn play-pause" title="播放">
+                            <button id="replay-play" class="control-btn play-pause" title="播放" aria-label="播放或暫停">
                                 <i class="fas fa-play"></i>
                             </button>
-                            <button id="replay-next" class="control-btn" title="下一步">
+                            <button id="replay-next" class="control-btn" title="下一步" aria-label="下一步">
                                 <i class="fas fa-chevron-right"></i>
                             </button>
-                            <button id="replay-end" class="control-btn" title="跳到結束">
+                            <button id="replay-end" class="control-btn" title="跳到結束" aria-label="跳到結束">
                                 <i class="fas fa-step-forward"></i>
                             </button>
                         </div>
                         <div class="speed-control">
-                            <label>播放速度：</label>
-                            <select id="replay-speed">
+                            <label for="replay-speed">播放速度：</label>
+                            <select id="replay-speed" aria-label="選擇回放播放速度">
                                 <option value="1">1x</option>
                                 <option value="2">2x</option>
                                 <option value="3">3x</option>
@@ -242,8 +250,9 @@
                     <div class="timeline-section">
                         <div class="timeline-title">時間軸</div>
                         <div class="progress-container">
-                            <input type="range" id="replay-progress" class="progress-slider" min="0" max="100"
-                                value="0">
+                            <label for="replay-progress" class="sr-only">回放進度控制</label>
+                            <input type="range" id="replay-progress" class="progress-slider" min="0" max="100" value="0"
+                                aria-label="回放進度滑桿，拖動以跳轉到指定步數" title="拖動以跳轉到指定步數">
                             <div class="progress-info">
                                 第 <span id="current-step">0</span> 步 / 共 <span id="total-steps">0</span> 步
                             </div>

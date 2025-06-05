@@ -6,6 +6,65 @@ const modalContent = document.getElementById('modalContent');
 const closeBtn = document.querySelector('.close');
 const navLinks = document.querySelectorAll('.nav-link');
 
+// 動態設置浮動符號位置，避免重疊
+function positionFloatingIcons() {
+    const iconItems = document.querySelectorAll('.icon-item');
+    if (iconItems.length === 0) return;
+
+    const container = document.querySelector('.floating-icons');
+    if (!container) return;
+
+    const containerRect = container.getBoundingClientRect();
+    const iconSize = 80; // 符號大小
+    const minDistancePercent = 25; // 最小距離百分比
+
+    const positions = [];
+
+    // 為每個符號生成不重疊的位置（使用百分比）
+    iconItems.forEach((icon, index) => {
+        let position;
+        let attempts = 0;
+        const maxAttempts = 100;
+
+        do {
+            position = {
+                x: Math.random() * 80 + 5, // 5% 到 85% 之間
+                y: Math.random() * 80 + 5  // 5% 到 85% 之間
+            };
+            attempts++;
+        } while (attempts < maxAttempts && positions.some(pos => {
+            const distance = Math.sqrt(Math.pow(pos.x - position.x, 2) + Math.pow(pos.y - position.y, 2));
+            return distance < minDistancePercent;
+        }));
+
+        positions.push(position);
+
+        // 應用位置（使用百分比）
+        icon.style.position = 'absolute';
+        icon.style.left = `${position.x}%`;
+        icon.style.top = `${position.y}%`;
+
+        // 設置隨機動畫延遲
+        icon.style.animationDelay = `${index * 1.2 + Math.random() * 1.5}s`;
+
+        // 添加隨機動畫持續時間變化，讓每個符號的浮動速度稍有不同
+        icon.style.animationDuration = `${5 + Math.random() * 2}s`;
+    });
+}
+
+// 頁面載入完成後執行位置設置
+document.addEventListener('DOMContentLoaded', () => {
+    // 等待 CSS 載入完成
+    setTimeout(positionFloatingIcons, 100);
+
+    // 視窗大小變化時重新計算位置
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(positionFloatingIcons, 300);
+    });
+});
+
 // Mobile Navigation Toggle
 hamburger?.addEventListener('click', () => {
     hamburger.classList.toggle('active');
@@ -139,31 +198,29 @@ function showGameInfo(gameType) {
         `;
     } else if (gameType === 'tictactoe') {
         content = `
-            <h2><i class="fas fa-th"></i> 井字遊戲 (Tic-tac-toe)</h2>
-            <div class="game-info-content">
+            <h2><i class="fas fa-th"></i> 井字遊戲 (Tic-tac-toe)</h2>            <div class="game-info-content">
                 <h3>遊戲特色</h3>
                 <ul>
                     <li><strong>Minimax AI</strong>：採用經典的遊戲樹搜索演算法</li>
-                    <li><strong>四種難度</strong>：簡單、普通、困難、專家級</li>
-                    <li><strong>雙人對戰</strong>：支援人類 vs 人類和人類 vs AI 模式</li>
+                    <li><strong>四種難度</strong>：簡單、普通、困難、不可能</li>
+                    <li><strong>多種模式</strong>：支援人類 vs 人類、人類 vs AI、AI vs AI 模式</li>
                     <li><strong>智能優化</strong>：Alpha-Beta 剪枝提升 AI 計算效率</li>
-                    <li><strong>音效系統</strong>：豐富的遊戲音效和視覺反饋</li>
-                    <li><strong>數據持久化</strong>：自動保存遊戲統計和設定</li>
+                    <li><strong>視覺效果</strong>：流暢的移動動畫和勝利連線動畫</li>
+                    <li><strong>數據持久化</strong>：自動保存遊戲設定</li>
                 </ul>
                 <h3>技術亮點</h3>
                 <ul>
                     <li>純原生 JavaScript 實現，無外部依賴</li>
-                    <li>模組化 MVC 架構設計</li>
+                    <li>模組化架構設計</li>
                     <li>響應式設計，支援各種設備</li>
-                    <li>Web Audio API 高品質音效</li>
+                    <li>現代化卡片式 UI 設計</li>
                     <li>Local Storage 數據持久化</li>
-                </ul>
-                <h3>AI 難度等級</h3>
+                </ul>                <h3>AI 難度等級</h3>
                 <ul>
-                    <li><strong>簡單</strong>：隨機移動，適合初學者</li>
-                    <li><strong>普通</strong>：防守為主，阻止玩家獲勝</li>
-                    <li><strong>困難</strong>：攻守兼備，主動尋求獲勝機會</li>
-                    <li><strong>專家</strong>：完美遊玩，使用完整 Minimax 算法</li>
+                    <li><strong>簡單</strong>：隨機移動，適合初學者練習</li>
+                    <li><strong>普通</strong>：基礎策略，會阻止玩家獲勝</li>
+                    <li><strong>困難</strong>：進階策略，主動尋求獲勝機會</li>
+                    <li><strong>不可能</strong>：完整 Minimax 算法，理論上不會犯錯</li>
                 </ul>
                 <div class="modal-actions">
                     <a href="tic_tac_toe/index.html" class="btn btn-primary">

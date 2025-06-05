@@ -2,7 +2,7 @@
     "welcome": {
         "title": "井字棋",
         "subtitle": "Minimax AI 智能系統",
-        "description": "體驗經典的井字棋遊戲，挑戰不同難度的 Minimax AI 對手，或觀看 AI 自我對弈的策略展示"
+        "description": "體驗經典的井字棋遊戲，挑戰不同難度的 Minimax AI 對手，或觀看 AI 對弈演示"
     },
     "modes": {
         "humanVsHuman": {
@@ -18,9 +18,11 @@
             "title": "AI 對戰",
             "description": "觀看兩個 AI 的精彩對局，學習最佳策略"
         }
-    },    "ui": {        
+    },
+    "ui": {
         "buttons": {
             "viewRules": "查看規則",
+            "viewStats": "查看統計",
             "newGame": "新遊戲",
             "undo": "悔棋",
             "confirm": "確認",
@@ -55,14 +57,14 @@
         },
         "difficulty": {
             "easy": "簡單",
-            "medium": "普通", 
+            "medium": "普通",
             "hard": "困難",
             "impossible": "不可能"
         },
         "modal": {
             "gameRules": {
                 "title": "井字棋遊戲規則",
-                "content": "井字棋是一個經典的策略遊戲，規則簡單易懂：\n\n1. 遊戲在 3×3 的棋盤上進行\n2. 兩名玩家輪流在空格中放置自己的符號（X 或 O）\n3. 率先在橫、直、斜任意方向連成一線者獲勝\n4. 如果棋盤填滿而無人獲勝則為平局\n\n**AI 難度說明：**\n- 簡單：隨機策略，適合初學者\n- 普通：基礎 Minimax 演算法\n- 困難：進階 Minimax 演算法\n- 不可能：完美 Minimax 演算法，永不出錯"
+                "content": "井字棋是一個經典的策略遊戲，規則簡單易懂：\n\n1. 遊戲在 3×3 的棋盤上進行\n2. 兩名玩家輪流在空格中放置自己的符號（X 或 O）\n3. 率先在橫、直、斜任意方向連成一線者獲勝\n4. 如果棋盤填滿而無人獲勝則為平局\n\n**AI 難度說明：**\n- 簡單：隨機策略，適合初學者\n- 普通：基礎防守策略\n- 困難：進階攻守策略\n- 不可能：完整 Minimax 算法"
             }
         }
     },

@@ -20,7 +20,7 @@ class Game {
         this.loadSettings();
         this.ui.showMainMenu();
     }
-    
+
     setupEventListeners() {
         // 注意：UI 類別已經處理了所有事件綁定
         // 這裡只需要設置一些 Game 類別特定的事件監聽器
@@ -35,19 +35,51 @@ class Game {
             this.resetGame();
         });
     }
-    
+
     startGame(mode) {
         this.gameMode = mode;
         this.gameActive = true;
-        this.currentPlayer = 'X';
+        this.currentPlayer = 'X';  // X 總是先手
         this.gameHistory = [];
+        this.gameStartTime = Date.now(); // 記錄遊戲開始時間
         this.board.reset();
         this.ui.updateBoard(this.board);
-        this.ui.updateGameStatus(`玩家 ${this.currentPlayer} 的回合`);
+
+        console.log(`遊戲開始: 模式=${mode}, 玩家符號=${this.playerSymbol || 'X'}`);
+
+        // 更新遊戲狀態訊息
+        if (this.gameMode === 'ai-vs-ai') {
+            this.ui.updateGameStatus('AI 對戰開始');
+        } else if (this.gameMode === 'ai' && this.playerSymbol === 'O') {
+            // 玩家選擇 O，提示 AI 先行
+            this.ui.updateGameStatus('AI (X) 回合');
+        } else {
+            this.ui.updateGameStatus(`玩家 ${this.currentPlayer} 的回合`);
+        }
+
+        // AI vs AI 模式：啟動第一個 AI 移動
+        if (this.gameMode === 'ai-vs-ai') {
+            setTimeout(() => this.makeAIMove(), 800);
+        }
+        // 人類 vs AI 模式，如果玩家選擇 O (後手)，讓 AI 先行
+        else if (this.gameMode === 'ai' && this.playerSymbol === 'O') {
+            // 確認玩家是 O 時，AI 應該先行(X)
+            setTimeout(() => this.makeAIMove(), 800);
+        }
     }
-    
     handleCellClick(index) {
         if (!this.gameActive) return;
+
+        // 檢查是否是正確的玩家回合
+        if (this.gameMode === 'ai') {
+            // 在人類 vs AI 模式，確認是玩家的回合
+            if ((this.playerSymbol === 'X' && this.currentPlayer === 'O') ||
+                (this.playerSymbol === 'O' && this.currentPlayer === 'X')) {
+                // 如果不是玩家的回合，不處理點擊
+                return;
+            }
+        }
+
         if (!this.board.makeMove(index, this.currentPlayer)) {
             return;
         }
@@ -65,12 +97,10 @@ class Game {
         // 添加放置動畫
         setTimeout(() => {
             this.ui.setAnimating(false);
-        }, 300);
-
-        // 檢查遊戲結束
-        const winner = this.board.checkWinner();
-        if (winner) {
-            this.endGame(winner);
+        }, 300);        // 檢查遊戲結束
+        const winResult = this.board.checkWinner();
+        if (winResult) {
+            this.endGame(winResult.winner);
             return;
         }
 
@@ -78,24 +108,46 @@ class Game {
             this.endGame('tie');
             return;
         }
-        
+
         // 切換玩家
         this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
-        this.ui.updateGameStatus(`玩家 ${this.currentPlayer} 的回合`);
 
-        // AI 回合
-        if (this.gameMode === 'ai' && this.currentPlayer === 'O') {
-            this.makeAIMove();
+        // 更新遊戲狀態訊息
+        if (this.gameMode === 'ai') {
+            // 人類 vs AI 模式
+            if ((this.playerSymbol === 'X' && this.currentPlayer === 'O') ||
+                (this.playerSymbol === 'O' && this.currentPlayer === 'X')) {
+                // 輪到 AI 回合
+                this.ui.updateGameStatus(`AI 思考中...`);
+                setTimeout(() => this.makeAIMove(), 800);
+            } else {
+                // 輪到玩家回合
+                this.ui.updateGameStatus(`玩家回合 (${this.currentPlayer})`);
+            }
+        } else {
+            // 雙人模式
+            this.ui.updateGameStatus(`玩家 ${this.currentPlayer} 的回合`);
         }
     }
-    
     async makeAIMove() {
-        this.ui.updateGameStatus('AI 思考中...');
+        // 更新 AI 思考狀態
+        const currentAI = this.gameMode === 'ai-vs-ai' ?
+            `${this.currentPlayer} AI` : 'AI';
+
+        this.ui.updateGameStatus(`${currentAI} 思考中...`);
         this.ui.showAIThinking();
 
         // 添加延遲讓玩家看到 AI 在思考
         await new Promise(resolve => setTimeout(resolve, 1000));
 
+        // 選擇使用對應的 AI 難度
+        let aiDifficulty = this.aiDifficulty;
+        if (this.gameMode === 'ai-vs-ai') {
+            aiDifficulty = this.currentPlayer === 'X' ? this.aiDifficultyX : this.aiDifficultyO;
+            this.ai.setDifficulty(aiDifficulty);
+        }
+
+        // 執行 AI 移動
         const move = this.ai.makeMove(this.board, this.currentPlayer);
 
         if (move !== null && move !== undefined) {
@@ -109,30 +161,51 @@ class Game {
             });
 
             this.ui.updateBoard(this.board);
-            this.ui.hideAIThinking();
-
-            // 檢查遊戲結束
-            const winner = this.board.checkWinner();
-            if (winner) {
-                this.endGame(winner);
+            this.ui.hideAIThinking();            // 檢查遊戲結束
+            const winResult = this.board.checkWinner();
+            if (winResult) {
+                this.endGame(winResult.winner);
                 return;
             }
 
             if (this.board.isFull()) {
                 this.endGame('tie');
                 return;
-            }
+            }// 切換玩家
+            this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
 
-            // 切換回玩家
-            this.currentPlayer = 'X';
-            this.ui.updateGameStatus(`玩家 ${this.currentPlayer} 的回合`);
+            // 根據不同模式決定下一步
+            if (this.gameMode === 'ai-vs-ai') {
+                // AI vs AI 模式：繼續下一個 AI 的回合
+                this.ui.updateGameStatus(`${this.currentPlayer} AI 回合`);
+                setTimeout(() => this.makeAIMove(), 800);
+            } else if (this.gameMode === 'ai') {
+                // 人類對 AI 模式
+                if (this.playerSymbol === 'X' && this.currentPlayer === 'O') {
+                    // 如果玩家是 X，AI 是 O，且現在輪到 O
+                    setTimeout(() => this.makeAIMove(), 800);
+                } else if (this.playerSymbol === 'O' && this.currentPlayer === 'X') {
+                    // 如果玩家是 O，AI 是 X，且現在輪到 X
+                    setTimeout(() => this.makeAIMove(), 800);
+                } else {
+                    // 輪到玩家
+                    this.ui.updateGameStatus(`玩家 ${this.currentPlayer} 的回合`);
+                }
+            } else {
+                // 輪到玩家
+                this.ui.updateGameStatus(`玩家 ${this.currentPlayer} 的回合`);
+            }
         }
-    }    endGame(result) {
+    } endGame(result) {
         this.gameActive = false;
 
         let message = '';
         let title = '';
         let isWin = false;
+
+        // 獲取勝利線條（如果有的話）
+        const winningResult = this.board.checkWinner();
+        const winLine = winningResult ? winningResult.winningLine : null;
 
         if (result === 'tie') {
             title = window.textManager?.getText('ui.messages.gameDraw', '平局！');
@@ -140,39 +213,103 @@ class Game {
         } else if (result === 'X') {
             if (this.gameMode === 'human') {
                 title = window.textManager?.getText('ui.messages.gameVsHumanWin', '{player} 玩家獲勝！').replace('{player}', 'X');
-                message = '玩家 X 取得勝利！';
-            } else {
-                title = window.textManager?.getText('ui.messages.gameVsAIWin', '恭喜您獲勝！');
-                message = '恭喜你戰勝了AI對手！';
-                isWin = true;
+                message = '玩家 X 成功連成一線，取得勝利！';
+            } else if (this.gameMode === 'ai') {
+                // 人類與 AI 對戰
+                if (this.playerSymbol === 'X') {
+                    title = window.textManager?.getText('ui.messages.gameVsAIWin', '恭喜您獲勝！');
+                    message = '恭喜你成功連成一線，戰勝了AI對手！';
+                    isWin = true;
+                } else {
+                    title = window.textManager?.getText('ui.messages.gameVsAILose', 'AI 獲勝！');
+                    message = 'AI (X) 成功連成一線，取得勝利！';
+                }
+            } else if (this.gameMode === 'ai-vs-ai') {
+                // AI vs AI 對戰
+                title = 'X AI 獲勝！';
+                message = `X AI (${this.aiDifficultyX}) 成功連成一線，戰勝了 O AI (${this.aiDifficultyO})！`;
             }
         } else if (result === 'O') {
             if (this.gameMode === 'human') {
                 title = window.textManager?.getText('ui.messages.gameVsHumanWin', '{player} 玩家獲勝！').replace('{player}', 'O');
-                message = '玩家 O 取得勝利！';
-            } else {
-                title = window.textManager?.getText('ui.messages.gameVsAILose', 'AI 獲勝！');
-                message = 'AI成功預測了您的策略並取得勝利。';
+                message = '玩家 O 成功連成一線，取得勝利！';
+            } else if (this.gameMode === 'ai') {
+                // 人類與 AI 對戰
+                if (this.playerSymbol === 'O') {
+                    title = window.textManager?.getText('ui.messages.gameVsAIWin', '恭喜您獲勝！');
+                    message = '恭喜你成功連成一線，戰勝了AI對手！';
+                    isWin = true;
+                } else {
+                    title = window.textManager?.getText('ui.messages.gameVsAILose', 'AI 獲勝！');
+                    message = 'AI (O) 成功連成一線，取得勝利！';
+                }
+            } else if (this.gameMode === 'ai-vs-ai') {
+                // AI vs AI 對戰
+                title = 'O AI 獲勝！';
+                message = `O AI (${this.aiDifficultyO}) 成功連成一線，戰勝了 X AI (${this.aiDifficultyX})！`;
             }
         }
-        
+
+        console.log(`遊戲結束：結果=${result}, 標題=${title}, 訊息=${message}`);
+
+        // 更新遊戲狀態和顯示結束對話框
         this.ui.updateGameStatus(title);
         this.ui.showGameEndDialog(title, message);
 
         // 標記獲勝線
-        const winLine = this.board.getWinningLine();
         if (winLine) {
             this.ui.highlightWinningLine(winLine);
+        }        // 儲存遊戲結果
+        let gameMode = this.gameMode;
+        let gameResult = result;
+        let gameWinner = null;
+
+        // 轉換遊戲模式名稱以匹配 storage.js 期望的格式
+        if (this.gameMode === 'human') {
+            gameMode = 'human-vs-human';
+        } else if (this.gameMode === 'ai') {
+            gameMode = 'human-vs-ai';
+            // 對於 human-vs-ai 模式，需要轉換結果格式
+            if (result === 'tie') {
+                gameResult = 'draw';
+            } else if ((result === 'X' && this.playerSymbol === 'X') ||
+                (result === 'O' && this.playerSymbol === 'O')) {
+                gameResult = 'win';
+            } else {
+                gameResult = 'lose';
+            }
+        } else if (this.gameMode === 'ai-vs-ai') {
+            gameMode = 'ai-vs-ai';
+            if (result === 'tie') {
+                gameResult = 'draw';
+            } else {
+                gameWinner = result; // 'X' 或 'O'
+            }
         }
 
-        // 儲存遊戲結果
-        this.storage.updateStats(result, this.aiDifficulty, this.gameHistory.length);
+        // 對於非 human-vs-ai 模式，設置獲勝者
+        if (gameMode !== 'human-vs-ai' && result !== 'tie' && result !== 'draw') {
+            gameWinner = result;
+        }
+
+        const gameData = {
+            mode: gameMode,
+            result: gameResult,
+            winner: gameWinner,
+            difficulty: gameMode === 'human-vs-ai' ? this.aiDifficulty :
+                gameMode === 'ai-vs-ai' ? { x: this.aiDifficultyX, o: this.aiDifficultyO } : null,
+            gameTime: Date.now() - this.gameStartTime,
+            playerSymbol: this.playerSymbol,
+            timestamp: Date.now()
+        };
+
+        this.storage.saveGameResult(gameData);
     }
 
     restartGame() {
         this.startGame(this.gameMode);
     }
-    
+
     returnToMenu() {
         this.gameActive = false;
         // 顯示主選單的邏輯（重新顯示模式選擇）
@@ -200,15 +337,15 @@ class Game {
             this.board.reset();
             this.currentPlayer = 'X';
         }
-        
-        this.ui.updateBoard(this.board); 
+
+        this.ui.updateBoard(this.board);
         this.ui.updateGameStatus(`玩家 ${this.currentPlayer} 的回合`);
     }
 
     loadSettings() {
         const settings = this.storage.loadSettings();
     }
-    
+
     // 獲取遊戲統計數據
     getGameStats() {
         return this.storage.loadStats();
@@ -217,13 +354,20 @@ class Game {
     // 重置遊戲統計
     resetStats() {
         return this.storage.resetStats();
+    }    // 設置玩家符號
+    setPlayerSymbol(symbol) {
+        // 設置玩家符號並記錄到控制台
+        this.playerSymbol = symbol;
+        console.log(`設置玩家符號: ${symbol}`);
+
+        // 重置當前相關邏輯
+        if (this.gameMode === 'ai') {
+            // 如果是 AI 模式，自動設置 AI 使用的符號
+            this.aiSymbol = symbol === 'X' ? 'O' : 'X';
+            console.log(`AI 使用符號: ${this.aiSymbol}`);
+        }
     }
 
-    // 設置玩家符號
-    setPlayerSymbol(symbol) {
-        this.playerSymbol = symbol;
-    }
-    
     // 設置 AI 難度
     setAIDifficulty(difficulty, player = null) {
         if (player) {

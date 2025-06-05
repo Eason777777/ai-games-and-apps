@@ -1,58 +1,59 @@
 // 遊戲存儲管理器
 class GameStorage {
     constructor() {
-        this.storageKey = 'ticTacToeGame';
         this.statsKey = 'ticTacToeStats';
         this.settingsKey = 'ticTacToeSettings';
+        this.historyKey = 'ticTacToeHistory';
     }
 
-    // 保存遊戲狀態
-    saveGameState(gameState) {
+    // 記錄遊戲結果
+    saveGameResult(gameData) {
         try {
-            const data = {
-                board: gameState.board,
-                currentPlayer: gameState.currentPlayer,
-                gameMode: gameState.gameMode,
-                playerSymbol: gameState.playerSymbol,
-                aiDifficulty: gameState.aiDifficulty,
+            // 更新統計數據
+            this.updateStats(gameData);
+            // 保存到歷史記錄
+            const gameRecord = {
+                date: new Date().toISOString(),
+                mode: gameData.mode,
+                result: gameData.result,
+                winner: gameData.winner,
+                difficulty: gameData.difficulty,
+                gameTime: gameData.gameTime,
+                playerSymbol: gameData.playerSymbol,
                 timestamp: Date.now()
             };
-            localStorage.setItem(this.storageKey, JSON.stringify(data));
-            return true;
-        } catch (e) {
-            console.error('保存遊戲狀態失敗:', e);
-            return false;
-        }
-    }
 
-    // 載入遊戲狀態
-    loadGameState() {
-        try {
-            const data = localStorage.getItem(this.storageKey);
-            if (!data) return null;
+            const history = JSON.parse(localStorage.getItem(this.historyKey) || '[]');
+            history.unshift(gameRecord);
 
-            const gameState = JSON.parse(data);
-
-            // 檢查數據是否過期（24小時）
-            if (Date.now() - gameState.timestamp > 24 * 60 * 60 * 1000) {
-                this.clearGameState();
-                return null;
+            // 只保留最近50場遊戲記錄
+            if (history.length > 50) {
+                history.splice(50);
             }
 
-            return gameState;
+            localStorage.setItem(this.historyKey, JSON.stringify(history));
+            return true;
         } catch (e) {
-            console.error('載入遊戲狀態失敗:', e);
-            return null;
+            console.error('保存遊戲記錄失敗:', e);
+            return false;
+        }
+    }    // 獲取遊戲歷史記錄
+    getGameHistory() {
+        try {
+            return JSON.parse(localStorage.getItem(this.historyKey) || '[]');
+        } catch (e) {
+            console.error('載入遊戲歷史失敗:', e);
+            return [];
         }
     }
 
-    // 清除遊戲狀態
-    clearGameState() {
+    // 清除遊戲歷史
+    clearGameHistory() {
         try {
-            localStorage.removeItem(this.storageKey);
+            localStorage.removeItem(this.historyKey);
             return true;
         } catch (e) {
-            console.error('清除遊戲狀態失敗:', e);
+            console.error('清除遊戲歷史失敗:', e);
             return false;
         }
     }
@@ -81,73 +82,111 @@ class GameStorage {
             console.error('載入統計數據失敗:', e);
             return this.getDefaultStats();
         }
-    }
-
-    // 獲取預設統計數據
+    }    // 獲取預設統計數據
     getDefaultStats() {
         return {
-            gamesPlayed: 0,
-            gamesWon: 0,
-            gamesLost: 0,
-            gamesDraw: 0,
-            winStreak: 0,
-            bestWinStreak: 0,
-            totalPlayTime: 0,
-            averageGameTime: 0,
-            aiWins: {
-                easy: 0,
-                medium: 0,
-                hard: 0,
-                impossible: 0
+            // 按模式分類統計
+            humanVsHuman: {
+                gamesPlayed: 0,
+                xWins: 0,
+                oWins: 0,
+                draws: 0
             },
-            aiLosses: {
-                easy: 0,
-                medium: 0,
-                hard: 0,
-                impossible: 0
+            humanVsAI: {
+                gamesPlayed: 0,
+                humanWins: 0,
+                aiWins: 0,
+                draws: 0,
+                // 按AI難度分類
+                byDifficulty: {
+                    easy: { wins: 0, losses: 0, draws: 0 },
+                    medium: { wins: 0, losses: 0, draws: 0 },
+                    hard: { wins: 0, losses: 0, draws: 0 },
+                    impossible: { wins: 0, losses: 0, draws: 0 }
+                }
+            },
+            aiVsAI: {
+                gamesPlayed: 0,
+                xWins: 0,
+                oWins: 0,
+                draws: 0
             }
         };
-    }
-
-    // 更新統計數據
-    updateStats(result, difficulty = null, gameTime = 0) {
+    }    // 更新統計數據
+    updateStats(gameData) {
         const stats = this.loadStats();
+        const { result, mode, difficulty = null, winner = null } = gameData;
 
-        stats.gamesPlayed++;
-        stats.totalPlayTime += gameTime;
-        stats.averageGameTime = stats.totalPlayTime / stats.gamesPlayed;
-
-        switch (result) {
-            case 'win':
-                stats.gamesWon++;
-                stats.winStreak++;
-                stats.bestWinStreak = Math.max(stats.bestWinStreak, stats.winStreak);
-                if (difficulty) {
-                    stats.aiWins[difficulty] = (stats.aiWins[difficulty] || 0) + 1;
+        // 按遊戲模式更新統計
+        switch (mode) {
+            case 'human-vs-human':
+                stats.humanVsHuman.gamesPlayed++;
+                if (result === 'draw') {
+                    stats.humanVsHuman.draws++;
+                } else if (winner === 'X') {
+                    stats.humanVsHuman.xWins++;
+                } else if (winner === 'O') {
+                    stats.humanVsHuman.oWins++;
                 }
                 break;
-            case 'lose':
-                stats.gamesLost++;
-                stats.winStreak = 0;
-                if (difficulty) {
-                    stats.aiLosses[difficulty] = (stats.aiLosses[difficulty] || 0) + 1;
+
+            case 'human-vs-ai':
+                stats.humanVsAI.gamesPlayed++;
+                if (result === 'draw') {
+                    stats.humanVsAI.draws++;
+                    if (difficulty) {
+                        stats.humanVsAI.byDifficulty[difficulty].draws++;
+                    }
+                } else if (result === 'win') {
+                    stats.humanVsAI.humanWins++;
+                    if (difficulty) {
+                        stats.humanVsAI.byDifficulty[difficulty].wins++;
+                    }
+                } else if (result === 'lose') {
+                    stats.humanVsAI.aiWins++;
+                    if (difficulty) {
+                        stats.humanVsAI.byDifficulty[difficulty].losses++;
+                    }
                 }
                 break;
-            case 'draw':
-                stats.gamesDraw++;
-                stats.winStreak = 0;
+
+            case 'ai-vs-ai':
+                stats.aiVsAI.gamesPlayed++;
+                if (result === 'draw') {
+                    stats.aiVsAI.draws++;
+                } else if (winner === 'X') {
+                    stats.aiVsAI.xWins++;
+                } else if (winner === 'O') {
+                    stats.aiVsAI.oWins++;
+                }
                 break;
         }
 
         this.saveStats(stats);
         return stats;
+    }// 重置統計數據
+    resetStats() {
+        try {
+            const defaultStats = this.getDefaultStats();
+            localStorage.setItem(this.statsKey, JSON.stringify(defaultStats));
+            return defaultStats;
+        } catch (e) {
+            console.error('重置統計數據失敗:', e);
+            return this.getDefaultStats();
+        }
     }
 
-    // 重置統計數據
-    resetStats() {
-        const defaultStats = this.getDefaultStats();
-        this.saveStats(defaultStats);
-        return defaultStats;
+    // 清除所有數據
+    clearAllData() {
+        try {
+            localStorage.removeItem(this.statsKey);
+            localStorage.removeItem(this.historyKey);
+            localStorage.removeItem(this.settingsKey);
+            return true;
+        } catch (e) {
+            console.error('清除所有數據失敗:', e);
+            return false;
+        }
     }
 
     // 保存設置
@@ -178,11 +217,13 @@ class GameStorage {
     getDefaultSettings() {
         return {
             animationsEnabled: true,
-            autoSave: true,
             theme: 'default',
             showHints: true,
             aiThinkingTime: 1000,
-            language: 'zh-TW'
+            language: 'zh-TW',
+            lastPlayedMode: 'human-vs-ai',
+            lastDifficulty: 'medium',
+            lastPlayerSymbol: 'X'
         };
     }
 
@@ -192,108 +233,6 @@ class GameStorage {
         settings[key] = value;
         this.saveSettings(settings);
         return settings;
-    }
-
-    // 保存遊戲歷史
-    saveGameHistory(gameData) {
-        try {
-            const historyKey = 'ticTacToeHistory';
-            let history = JSON.parse(localStorage.getItem(historyKey) || '[]');
-
-            history.unshift({
-                ...gameData,
-                timestamp: Date.now(),
-                id: Date.now().toString()
-            });
-
-            // 只保留最近100場遊戲
-            if (history.length > 100) {
-                history = history.slice(0, 100);
-            }
-
-            localStorage.setItem(historyKey, JSON.stringify(history));
-            return true;
-        } catch (e) {
-            console.error('保存遊戲歷史失敗:', e);
-            return false;
-        }
-    }
-
-    // 載入遊戲歷史
-    loadGameHistory() {
-        try {
-            const historyKey = 'ticTacToeHistory';
-            const data = localStorage.getItem(historyKey);
-            return data ? JSON.parse(data) : [];
-        } catch (e) {
-            console.error('載入遊戲歷史失敗:', e);
-            return [];
-        }
-    }
-
-    // 清除遊戲歷史
-    clearGameHistory() {
-        try {
-            localStorage.removeItem('ticTacToeHistory');
-            return true;
-        } catch (e) {
-            console.error('清除遊戲歷史失敗:', e);
-            return false;
-        }
-    }
-
-    // 導出數據
-    exportData() {
-        try {
-            const data = {
-                stats: this.loadStats(),
-                settings: this.loadSettings(),
-                history: this.loadGameHistory(),
-                exportDate: new Date().toISOString()
-            };
-
-            const blob = new Blob([JSON.stringify(data, null, 2)], {
-                type: 'application/json'
-            });
-
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `tic-tac-toe-data-${Date.now()}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-
-            return true;
-        } catch (e) {
-            console.error('導出數據失敗:', e);
-            return false;
-        }
-    }
-
-    // 導入數據
-    importData(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                try {
-                    const data = JSON.parse(e.target.result);
-
-                    if (data.stats) this.saveStats(data.stats);
-                    if (data.settings) this.saveSettings(data.settings);
-                    if (data.history) {
-                        localStorage.setItem('ticTacToeHistory', JSON.stringify(data.history));
-                    }
-
-                    resolve(true);
-                } catch (error) {
-                    reject(error);
-                }
-            };
-            reader.onerror = () => reject(new Error('讀取文件失敗'));
-            reader.readAsText(file);
-        });
     }
 
     // 檢查存儲空間
@@ -306,9 +245,7 @@ class GameStorage {
         } catch (e) {
             return false;
         }
-    }
-
-    // 獲取存儲使用情況
+    }    // 獲取存儲使用情況
     getStorageUsage() {
         try {
             let total = 0;
@@ -325,5 +262,37 @@ class GameStorage {
         } catch (e) {
             return { used: 0, available: 0, percentage: 0 };
         }
+    }    // 格式化統計數據供顯示使用
+    getFormattedStats() {
+        const stats = this.loadStats();
+
+        return {
+            // 人類 vs 人類模式統計
+            hvh: {
+                games: stats.humanVsHuman.gamesPlayed,
+                xWins: stats.humanVsHuman.xWins,
+                oWins: stats.humanVsHuman.oWins,
+                draws: stats.humanVsHuman.draws
+            },
+
+            // 人類 vs AI模式統計  
+            hva: {
+                games: stats.humanVsAI.gamesPlayed,
+                wins: stats.humanVsAI.humanWins,
+                losses: stats.humanVsAI.aiWins,
+                draws: stats.humanVsAI.draws,
+                winRate: stats.humanVsAI.gamesPlayed > 0 ?
+                    ((stats.humanVsAI.humanWins / stats.humanVsAI.gamesPlayed) * 100).toFixed(1) : '0.0',
+                difficulties: stats.humanVsAI.byDifficulty
+            },
+
+            // AI vs AI模式統計
+            ava: {
+                games: stats.aiVsAI.gamesPlayed,
+                xWins: stats.aiVsAI.xWins,
+                oWins: stats.aiVsAI.oWins,
+                draws: stats.aiVsAI.draws
+            }
+        };
     }
 }

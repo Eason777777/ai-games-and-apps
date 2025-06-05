@@ -40,9 +40,7 @@ class Board {
     getEmptyPositions() {
         return this.grid.map((cell, index) => cell === null ? index : null)
             .filter(index => index !== null);
-    }
-
-    // 檢查是否有玩家獲勝
+    }    // 檢查是否有玩家獲勝
     checkWinner() {
         const winPatterns = [
             [0, 1, 2], [3, 4, 5], [6, 7, 8], // 橫排
@@ -55,10 +53,15 @@ class Board {
             if (this.grid[a] &&
                 this.grid[a] === this.grid[b] &&
                 this.grid[a] === this.grid[c]) {
-                return {
+
+                // 記錄勝利信息
+                const winResult = {
                     winner: this.grid[a],
                     winningLine: pattern
                 };
+
+                console.log(`檢測到勝利：${this.grid[a]} 在 ${pattern.join(',')} 位置獲勝`);
+                return winResult;
             }
         }
         return null;

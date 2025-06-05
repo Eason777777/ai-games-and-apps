@@ -1,12 +1,18 @@
 // 文字管理器 - 從JSON載入並管理所有UI文字
 class TextManager {
     constructor() {
-        this.texts = null;
-        this.fallbackTexts = {
+        this.texts = null; this.fallbackTexts = {
             'welcome.title': '井字棋',
             'welcome.subtitle': 'Minimax AI 智能系統',
             'ui.buttons.newGame': '新遊戲',
-            'ui.buttons.viewRules': '查看規則'
+            'ui.buttons.viewRules': '查看規則',
+            'ui.buttons.viewStats': '查看統計',
+            'modal.newGameSettings': '新遊戲設定',
+            'modal.selectMode': '選擇模式',
+            'modal.selectAILevel': '選擇 AI 難度',
+            'modal.selectSymbol': '選擇您的符號',
+            'modal.startGame': '開始遊戲',
+            'modal.close': '關閉'
         };
     }
 
@@ -72,7 +78,7 @@ class TextManager {
         elements.forEach(element => {
             const textPath = element.getAttribute('data-text');
             const text = this.getText(textPath);
-            
+
             if (element.tagName === 'INPUT' && (element.type === 'text' || element.type === 'search')) {
                 element.placeholder = text;
             } else {

@@ -72,7 +72,6 @@ body {
 
 .button-group button:hover {
     background: rgba(255, 255, 255, 0.3);
-    transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
@@ -180,7 +179,6 @@ body {
 
 .symbol-btn:hover {
     background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
 }
 
 .symbol-btn.active {
@@ -266,8 +264,8 @@ body {
 }
 
 .cell.winning {
-    background: rgba(255, 215, 0, 0.8) !important;
-    animation: pulse 1s infinite;
+    background: rgba(255, 215, 0, 0.95) !important;
+    border: 2px solid #ffd700;
 }
 
 /* 遊戲控制 */
@@ -328,6 +326,22 @@ body {
     backdrop-filter: blur(5px);
 }
 
+/* 確保確認對話框在所有模態框之上 */
+.modal.show {
+    z-index: 2000;
+}
+
+/* 統計和歷史模態框的z-index */
+#stats-modal,
+#history-modal {
+    z-index: 1500;
+}
+
+/* 當顯示確認對話框時，確保它在最上層 */
+#modal {
+    z-index: 2500;
+}
+
 .modal-content {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     margin: 15% auto;
@@ -343,15 +357,22 @@ body {
 }
 
 .modal.celebrate .modal-content {
-    animation: celebration 1.5s ease-in-out;
     background: linear-gradient(135deg, #ffb347 0%, #ffcc33 100%);
+    border: 2px solid rgba(255, 215, 0, 0.7);
 }
 
-@keyframes celebration {
-    0%, 100% { transform: scale(1); }
-    10%, 30%, 50%, 70%, 90% { transform: translateY(-5px) scale(1.02); }
-    20%, 40%, 60%, 80% { transform: translateY(5px) scale(1.02); }
+.modal.celebrate #modal-title {
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    font-size: 2rem;
 }
+
+.modal.celebrate #modal-message {
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+/* 移除複雜動畫，保持簡潔 */
 
 .close-button {
     position: absolute;
@@ -372,7 +393,9 @@ body {
     margin-bottom: 15px;
     font-size: 1.8rem;
     font-weight: 700;
-    text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: block;
+    color: #fff;
 }
 
 #modal-message {
@@ -381,6 +404,8 @@ body {
     font-size: 1.1rem;
     max-width: 400px;
     margin: 0 auto 25px auto;
+    display: block;
+    color: #fff;
 }
 
 #modal-actions {
@@ -405,7 +430,206 @@ body {
 
 #modal-confirm:hover {
     background: rgba(255, 255, 255, 0.3);
+}
+
+/* 統計模態框樣式 */
+.stats-modal-content {
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.stats-container {
+    margin: 20px 0;
+}
+
+.stats-section {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.stats-section h3 {
+    color: #fff;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stats-grid {
+    display: grid;
+    gap: 10px;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-item:last-child {
+    border-bottom: none;
+}
+
+.stat-item.total {
+    font-weight: bold;
+    font-size: 1.1em;
+    border-top: 2px solid rgba(255, 255, 255, 0.2);
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.stat-label {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.stat-value {
+    color: #fff;
+    font-weight: bold;
+}
+
+.stats-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.secondary-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.secondary-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
     transform: translateY(-2px);
+}
+
+.danger-btn {
+    background: linear-gradient(135deg, #ff6b6b, #d63031);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.danger-btn:hover {
+    background: linear-gradient(135deg, #ff5252, #c62828);
+    transform: translateY(-2px);
+}
+
+/* 歷史模態框樣式 */
+.history-modal-content {
+    max-width: 700px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.history-container {
+    margin: 20px 0;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.history-item {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+}
+
+.history-item-info {
+    flex: 1;
+}
+
+.history-item-mode {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.history-item-details {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.history-item-date {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.history-item-result {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+.result-win {
+    color: #4CAF50;
+}
+
+.result-lose {
+    color: #f44336;
+}
+
+.result-draw {
+    color: #FF9800;
+}
+
+.history-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.empty-history {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    padding: 40px 20px;
+    font-style: italic;
+}
+
+.empty-history i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    opacity: 0.3;
 }
 
 /* 響應式設計 */
